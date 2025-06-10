@@ -1,4 +1,4 @@
-import { Code2 } from "lucide-react";
+import { Code2, User2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -77,9 +77,18 @@ const Navbar = () => {
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                  <DropdownMenuItem className="flex items-center">
+                    <User2 size={20} className="text-orange-500" />
+                    Profile
+                  </DropdownMenuItem>
                   {authUser.role === "ADMIN" && (
-                    <DropdownMenuItem>Add Problem</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => navigate("/add-problem")}
+                      className="flex items-center"
+                    >
+                      <Code2 size={20} className="text-orange-500" /> Add
+                      Problem
+                    </DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={logoutUser}>

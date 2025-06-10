@@ -22,6 +22,8 @@ export const problemCreationSchema = z.object({
   tags: z.array(z.string()).min(1, "At least one tag is required"),
   examples: z.record(ProgrammingLanguageEnum, ExampleSchema),
   constraints: z.string().optional(),
+  hints: z.array(z.string()).optional(),
+  editorial: z.string().optional(),
   testcases: z
     .array(TestCaseSchema)
     .min(1, "At least one testcase is required"),
