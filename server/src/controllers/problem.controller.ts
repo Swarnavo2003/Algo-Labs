@@ -28,6 +28,8 @@ export const createProblem = asyncHandler(
       referenceSolutions,
     } = req.body;
 
+    // console.log("Token", process.env.JUDGE0_API_KEY);
+
     if (
       !title ||
       !description ||
@@ -89,7 +91,7 @@ export const createProblem = asyncHandler(
 
       for (let i = 0; i < results.length; i++) {
         const result = results[i];
-        // console.log("Result: ", result);
+        console.log("Result: ", result);
 
         if (result.status.id !== 3) {
           throw new ApiError(

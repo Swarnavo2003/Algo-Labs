@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Lock, Mail } from "lucide-react";
-import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -16,12 +15,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AuthImage from "@/components/AuthImage";
 import { useAuthStore } from "@/store/useAuthStore";
-import type { LoginSchemaTypes } from "@/types";
+import { loginSchema, type LoginSchemaTypes } from "@/types";
 
-const loginSchema = z.object({
-  email: z.string().email("Enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters long"),
-});
+// const loginSchema = z.object({
+//   email: z.string().email("Enter a valid email"),
+//   password: z.string().min(6, "Password must be at least 6 characters long"),
+// });
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);

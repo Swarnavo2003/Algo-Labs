@@ -31,6 +31,7 @@ import { Button } from "./ui/button";
 import { Textarea } from "./ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Editor } from "@monaco-editor/react";
+import { sampleData } from "@/data/sample";
 
 type Difficulty = "EASY" | "MEDIUM" | "HARD";
 type Language = "JAVASCRIPT" | "PYTHON" | "JAVA";
@@ -68,7 +69,7 @@ interface ProblemFormData {
   difficulty: Difficulty;
   tags: Tag[];
   constraints: string;
-  hints?: string[];
+  hints?: string; // Changed from string[] to string
   editorial?: string;
   testcases: TestCase[];
   examples: Examples;
@@ -84,7 +85,7 @@ const problemSchema = z.object({
     .array(z.object({ value: z.string() }))
     .min(1, "At least one tag is required"),
   constraints: z.string().min(1, "Constraints are required"),
-  hints: z.array(z.string()).optional(),
+  hints: z.string().optional(), // Changed from z.array(z.string()).optional()
   editorial: z.string().optional(),
   testcases: z
     .array(
@@ -134,7 +135,7 @@ const CreateProblemForm = () => {
       title: "",
       description: "",
       difficulty: "EASY",
-      hints: [""],
+      hints: "",
       constraints: "",
       tags: [{ value: "" }],
       testcases: [{ input: "", output: "" }],
@@ -172,10 +173,24 @@ const CreateProblemForm = () => {
     fields: tagsFields,
     append: appendTag,
     remove: removeTag,
+    replace: replaceTags,
   } = useFieldArray({
     control: form.control,
     name: "tags", // This is separate and targets "tags"
   });
+
+  const getMonacoLanguage = (language: string) => {
+    switch (language) {
+      case "JAVASCRIPT":
+        return "javascript";
+      case "PYTHON":
+        return "python";
+      case "JAVA":
+        return "java";
+      default:
+        return "javascript";
+    }
+  };
 
   const onSubmit = async (data: ProblemFormData) => {
     try {
@@ -194,15 +209,40 @@ const CreateProblemForm = () => {
     }
   };
 
+  const loadSampleData = () => {
+    const example = sampleData;
+
+    const transformedData: ProblemFormData = {
+      title: example.title,
+      description: example.description,
+      difficulty: example.difficulty,
+      tags: example.tags.map((tag) => ({ value: tag })),
+      constraints: example.constraints,
+      hints: example.hints,
+      editorial: example.editorial,
+      testcases: example.testcases,
+      examples: example.examples,
+      codeSnippets: example.codeSnippets,
+      referenceSolutions: example.referenceSolutions,
+    };
+
+    replaceTags(transformedData.tags);
+
+    form.reset(transformedData);
+  };
+
   const languages: Language[] = ["JAVASCRIPT", "PYTHON", "JAVA"];
   return (
     <div className="container mx-auto py-8 px-4 max-w-7xl">
       <Card className="shadow-xl">
         <CardHeader className="pb-4">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <CardTitle className="text-2xl md:text-3xl flex items-center gap-3">
+            <CardTitle className="text-2xl md:text-3xl flex items-center justify-between gap-3">
               <h1>Create Problem</h1>
             </CardTitle>
+            <div className="flex items-center gap-2">
+              <Button onClick={loadSampleData}>Load Data</Button>
+            </div>
           </div>
         </CardHeader>
 
@@ -385,6 +425,7 @@ const CreateProblemForm = () => {
                                     {...field}
                                   />
                                 </FormControl>
+                                <FormMessage />
                               </FormItem>
                             )}
                           />
@@ -401,6 +442,7 @@ const CreateProblemForm = () => {
                                     {...field}
                                   />
                                 </FormControl>
+                                <FormMessage />
                               </FormItem>
                             )}
                           />
@@ -452,7 +494,7 @@ const CreateProblemForm = () => {
                                     <div className="border rounded-md overflow-hidden">
                                       <Editor
                                         height="300px"
-                                        language={language.toLocaleLowerCase()}
+                                        language={getMonacoLanguage(language)}
                                         theme="vs-dark"
                                         value={field.value}
                                         onChange={field.onChange}
@@ -467,6 +509,7 @@ const CreateProblemForm = () => {
                                       />
                                     </div>
                                   </FormControl>
+                                  <FormMessage />
                                 </FormItem>
                               )}
                             />
@@ -491,7 +534,7 @@ const CreateProblemForm = () => {
                                     <div className="border rounded-md overflow-hidden">
                                       <Editor
                                         height="300px"
-                                        language={language.toLocaleLowerCase()}
+                                        language={getMonacoLanguage(language)}
                                         theme="vs-dark"
                                         value={field.value}
                                         onChange={field.onChange}
@@ -506,6 +549,7 @@ const CreateProblemForm = () => {
                                       />
                                     </div>
                                   </FormControl>
+                                  <FormMessage />
                                 </FormItem>
                               )}
                             />
@@ -576,6 +620,64 @@ const CreateProblemForm = () => {
                       </TabsContent>
                     ))}
                   </Tabs>
+                </CardContent>
+              </Card>
+
+              {/* Extra Details */}
+              <Card className="mt-2">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <BookOpen className="w-5 h-5" />
+                    Extra Details
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 gap-6">
+                    {/* Constraints Field */}
+                    <FormField
+                      control={form.control}
+                      name="constraints"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Constraints</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Hints Field */}
+                    <FormField
+                      control={form.control}
+                      name="hints"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Hints</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    {/* Editorial Field */}
+                    <FormField
+                      control={form.control}
+                      name="editorial"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Editorial</FormLabel>
+                          <FormControl>
+                            <Textarea {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </CardContent>
               </Card>
 

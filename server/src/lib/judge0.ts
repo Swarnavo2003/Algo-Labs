@@ -26,6 +26,7 @@ export const submitBatch = async (
   const { data } = await axios.post(
     `${process.env.JUDGE0_API_URI}/submissions/batch?base64_encoded=false`,
     { submissions },
+    { headers: { Authorization: `Bearer ${process.env.JUDGE0_API_KEY}` } },
   );
 
   return data; // [{token},{token},{token}]
@@ -44,6 +45,7 @@ export const pollBatchResults = async (tokens: string[]): Promise<any[]> => {
           tokens: tokens.join(","),
           base64_encoded: false,
         },
+        headers: { Authorization: `Bearer ${process.env.JUDGE0_API_KEY}` },
       },
     );
 
