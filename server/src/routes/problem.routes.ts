@@ -5,20 +5,13 @@ import {
   deleteProblem,
   getAllProblems,
   getProblemById,
+  getSolvedProblems,
   updateProblem,
 } from "../controllers/problem.controller";
-import { validateZod } from "../middlewares/zod.middleware";
-import { problemCreationSchema } from "../validations/problem.validations";
 
 const problemRouter = Router();
 
-problemRouter.post(
-  "/create-problem",
-  isAuthenticated,
-  isAdmin,
-  validateZod(problemCreationSchema),
-  createProblem,
-);
+problemRouter.post("/create-problem", isAuthenticated, isAdmin, createProblem);
 
 problemRouter.get("/get-all-problems", isAuthenticated, getAllProblems);
 
@@ -37,5 +30,7 @@ problemRouter.delete(
   isAdmin,
   deleteProblem,
 );
+
+problemRouter.get("/get-solved-problems", isAuthenticated, getSolvedProblems);
 
 export default problemRouter;

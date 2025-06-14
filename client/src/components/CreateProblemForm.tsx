@@ -15,6 +15,7 @@ import {
   BookOpen,
   CheckCircle2,
   Code2,
+  Loader2,
   Plus,
   Save,
   Trash2,
@@ -32,6 +33,10 @@ import { Textarea } from "./ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Editor } from "@monaco-editor/react";
 import { sampleData } from "@/data/sample";
+import { useState } from "react";
+import { axiosInstance } from "@/lib/axios";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 type Difficulty = "EASY" | "MEDIUM" | "HARD";
 type Language = "JAVASCRIPT" | "PYTHON" | "JAVA";
@@ -85,7 +90,7 @@ const problemSchema = z.object({
     .array(z.object({ value: z.string() }))
     .min(1, "At least one tag is required"),
   constraints: z.string().min(1, "Constraints are required"),
-  hints: z.string().optional(), // Changed from z.array(z.string()).optional()
+  hints: z.string().optional(),
   editorial: z.string().optional(),
   testcases: z
     .array(
@@ -125,8 +130,8 @@ const problemSchema = z.object({
 });
 
 const CreateProblemForm = () => {
-  // const [isLoading, setIsLoading] = useState(false);
-  // const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   // Initialize React Hook Form with Zod validation and default values
   const form = useForm<ProblemFormData>({
@@ -194,18 +199,24 @@ const CreateProblemForm = () => {
 
   const onSubmit = async (data: ProblemFormData) => {
     try {
-      console.log("I am here");
+      setIsLoading(true);
       const transformedData = {
         ...data,
         tags: data.tags.map((tag) => tag.value),
       };
       console.log("Form Data:", transformedData);
-      // Add your registration logic here
+
+      const res = await axiosInstance.post(
+        "/problems/create-problem",
+        transformedData
+      );
+      toast.success(res.data?.data?.message || "Problem created successfully!");
+      navigate("/problems");
     } catch (error) {
-      console.error("Registration failed:", error);
-      // Handle error (show toast, etc.)
+      console.error("Problem creation failed:", error);
+      toast.error("Problem creation failed!");
     } finally {
-      // setIsLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -684,8 +695,17 @@ const CreateProblemForm = () => {
               {/* Submit Button */}
               <div className="flex justify-start pt-6">
                 <Button type="submit" size="lg" className="bg-orange-500">
-                  <Save className="w-5 h-5 mr-2" />
-                  Create Problem
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Please Wait
+                    </>
+                  ) : (
+                    <>
+                      <Save className="w-5 h-5 mr-2" />
+                      Create Problem
+                    </>
+                  )}
                 </Button>
               </div>
             </form>
