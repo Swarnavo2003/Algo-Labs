@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node build/index.js",
-    "build": "tsc",
-    "dev": "nodemon src/index.ts",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio"
@@ -14,7 +13,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "@prisma/client": "^6.13.0",
     "@types/jsonwebtoken": "^9.0.10",
@@ -28,11 +27,7 @@
     "zod": "^4.0.17"
   },
   "devDependencies": {
-    "@types/cookie-parser": "^1.4.9",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.3",
     "prettier": "^3.6.2",
-    "prisma": "^6.13.0",
-    "typescript": "^5.9.2"
+    "prisma": "^6.13.0"
   }
 }
