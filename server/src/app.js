@@ -5,6 +5,7 @@ import healthCheckRouter from "./routes/healthCheck.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import {errorHandler} from "./utils/error-handler.js";
 import problemRouter from "./routes/problem.routes.js";
+import executeCodeRouter from "./routes/executeCode.routes.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(
 app.use("/api/v1/health-check", healthCheckRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/problems", problemRouter);
+app.use("/api/v1/execute-code", executeCodeRouter);
 
 app.use(errorHandler);
 
