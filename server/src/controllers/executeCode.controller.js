@@ -184,3 +184,114 @@ export const executeCode = asyncHandler(async (req, res) => {
       ),
     );
 });
+
+export const runCode = asyncHandler(async (req, res) => {
+  const {source_code, language_id, stdin, expected_output} = req.body;
+
+  const userId = req.user.id;
+
+  if (!userId) {
+    throw new ApiError(401, "Unauthorized");
+  }
+
+  if (!source_code || !language_id) {
+    throw new ApiError(400, "All fields are required");
+  }
+
+  if (!Number.isInteger(language_id)) {
+    throw new ApiError(400, "Language ID must be an integer");
+  }
+
+  const validLanguageIds = [71, 62, 63];
+  if (!validLanguageIds.includes(language_id)) {
+    throw new ApiError(400, "Language ID is not supported");
+  }
+
+  // 1. Validate test cases (same as executeCode for now)
+  if (
+    !Array.isArray(stdin) ||
+    stdin.length === 0 ||
+    !Array.isArray(expected_output) ||
+    expected_output.length === 0 ||
+    stdin.length !== expected_output.length
+  ) {
+    throw new ApiError(400, "Invalid test cases");
+  }
+
+  // 2. Prepare each test case for judge0 batch submission
+  const submissions = stdin.map((input) => ({
+    source_code,
+    language_id,
+    stdin: input,
+  }));
+
+  // 3. Send this batch of submission to judge0
+  const submitResponse = await submitBatch(submissions);
+
+  const tokens = submitResponse.map((result) => result.token);
+
+  // 4. Poll judge0 for all the submitted test cases
+  const results = await pollBatchResults(tokens);
+
+  // 5. Analyze test cases result (no database storage)
+  let allPassed = true;
+
+  const detailedResult = results.map((result, index) => {
+    const stdout = result.stdout?.trim();
+    const expectedOutput = expected_output[index].trim();
+
+    const passed = stdout === expectedOutput;
+
+    if (!passed) {
+      allPassed = false;
+    }
+
+    return {
+      testCase: index + 1,
+      input: stdin[index],
+      passed,
+      stdout,
+      expected: expectedOutput,
+      stderr: result.stderr || null,
+      compile_output: result.compile_output || null,
+      status: result.status.description || null,
+      memory: result.memory ? `${result.memory} KB` : null,
+      time: result.time ? `${result.time} s` : null,
+    };
+  });
+
+  // 6. Prepare response data (no database operations)
+  const runResult = {
+    language: getLanguageName(language_id),
+    allPassed,
+    totalTestCases: detailedResult.length,
+    passedTestCases: detailedResult.filter((result) => result.passed).length,
+    testResults: detailedResult,
+    summary: {
+      status: allPassed ? "All test cases passed" : "Some test cases failed",
+      executionTime:
+        detailedResult
+          .reduce((total, result) => {
+            return total + (parseFloat(result.time) || 0);
+          }, 0)
+          .toFixed(3) + " s",
+      memoryUsed:
+        Math.max(
+          ...detailedResult.map((result) => parseInt(result.memory) || 0),
+        ) + " KB",
+    },
+  };
+
+  // 7. Return results without storing in database
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        {runResult},
+        allPassed
+          ? "Code executed successfully - All test cases passed!"
+          : "Code executed - Some test cases failed",
+      ),
+    );
+});
