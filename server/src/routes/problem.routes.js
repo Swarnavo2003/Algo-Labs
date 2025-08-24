@@ -22,7 +22,17 @@ problemRouter.post(
 
 problemRouter.get("/get-all-problems", isAuthenticated, getAllProblems);
 problemRouter.get("/get-problem/:id", isAuthenticated, getProblemById);
-problemRouter.put("/problem/:id", isAuthenticated, isAdmin, updateProblem);
-problemRouter.delete("/problem/:id", isAuthenticated, isAdmin, deleteProblem);
+problemRouter.put(
+  "/update-problem/:id",
+  isAuthenticated,
+  isAdmin,
+  updateProblem,
+);
+problemRouter.delete(
+  "/delete-problem/:id",
+  isAuthenticated,
+  isAdmin,
+  deleteProblem,
+);
 
 export default problemRouter;

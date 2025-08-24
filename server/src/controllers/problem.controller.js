@@ -46,12 +46,12 @@ export const createProblem = asyncHandler(async (req, res) => {
   }
 
   for (const [language, solutionCode] of Object.entries(referenceSolutions)) {
-    console.log(language, solutionCode);
-    console.log("------------------------------");
+    // console.log(language, solutionCode);
+    // console.log("------------------------------");
 
     const languageId = getJudge0LanguageId(language);
-    console.log("language ID: ", languageId);
-    console.log("------------------------------");
+    // console.log("language ID: ", languageId);
+    // console.log("------------------------------");
 
     if (!languageId) {
       throw new ApiError(400, `Language ${language} is not supported`);
@@ -63,24 +63,24 @@ export const createProblem = asyncHandler(async (req, res) => {
       stdin: input,
       expected_output: output,
     }));
-    console.log("submission: ", submission);
-    console.log("------------------------------");
+    // console.log("submission: ", submission);
+    // console.log("------------------------------");
 
     const submissionResults = await submitBatch(submission);
-    console.log("Submission Result: ", submissionResults);
-    console.log("------------------------------");
+    // console.log("Submission Result: ", submissionResults);
+    // console.log("------------------------------");
 
     const tokens = submissionResults.map((result) => result.token);
-    console.log("Tokens: ", tokens);
-    console.log("------------------------------");
+    // console.log("Tokens: ", tokens);
+    // console.log("------------------------------");
 
     const results = await pollBatchResults(tokens);
-    console.log("Result: ", results);
-    console.log("------------------------------");
+    // console.log("Result: ", results);
+    // console.log("------------------------------");
 
     for (let i = 0; i < results.length; i++) {
       const result = results[i];
-      console.log("Result: ", result);
+      // console.log("Result: ", result);
 
       if (result.status.id !== 3) {
         throw new ApiError(
