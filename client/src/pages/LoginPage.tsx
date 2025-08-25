@@ -18,7 +18,7 @@ const LoginPage = () => {
         </div>
       </div>
 
-      <div className="flex items-center justify-center w-full h-screen">
+      <div className="col-span-2 md:col-span-1 flex items-center justify-center  w-full h-screen">
         <LoginForm />
       </div>
     </div>
