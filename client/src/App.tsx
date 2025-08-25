@@ -6,6 +6,7 @@ import ProblemsPage from "./pages/ProblemsPage";
 import ProblemPage from "./pages/ProblemPage";
 import PricingPage from "./pages/PricingPage";
 import ProfilePage from "./pages/ProfilePage";
+import CollaboratePage from "./pages/CollaboratePage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/problem/:id" element={<ProblemPage />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/collaborate" element={<CollaboratePage />} />
       </Routes>
     </BrowserRouter>
   );
