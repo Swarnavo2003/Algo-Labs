@@ -1,11 +1,13 @@
-import { Button } from "./components/ui/button";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
-    <div className="h-screen w-full flex items-center justify-center">
-      <h1 className="text-3xl font-semibold mr-2">Lets Build AlgoLabs</h1>
-      <Button>Click Me</Button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
