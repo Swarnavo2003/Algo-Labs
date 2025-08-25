@@ -1,4 +1,4 @@
-import { Menu, X } from "lucide-react";
+import { Code2, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { cn } from "@/lib/utils";
@@ -42,6 +42,7 @@ export const HeroHeader = () => {
                 aria-label="home"
                 className="flex items-center text-xl font-semibold space-x-2"
               >
+                <Code2 className="size-6 mr-1" />
                 AlgoLabs
               </Link>
 
@@ -94,7 +95,7 @@ export const HeroHeader = () => {
                   size="sm"
                   className={cn(isScrolled && "lg:hidden")}
                 >
-                  <Link to="#">
+                  <Link to="/login">
                     <span>Login</span>
                   </Link>
                 </Button>
@@ -103,7 +104,7 @@ export const HeroHeader = () => {
                   size="sm"
                   className={cn(isScrolled && "lg:hidden")}
                 >
-                  <Link to="#">
+                  <Link to="/register">
                     <span>Sign Up</span>
                   </Link>
                 </Button>
