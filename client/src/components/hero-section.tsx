@@ -82,7 +82,7 @@ export default function HeroSection() {
                   className="hover:bg-background dark:hover:border-t-border bg-muted group mx-auto flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-md shadow-zinc-950/5 transition-colors duration-300 dark:border-t-white/5 dark:shadow-zinc-950"
                 >
                   <span className="text-foreground text-sm">
-                    Introducing AlgoLabs
+                    Introducing AlgoLabs 🚀
                   </span>
                   <span className="dark:border-background block h-4 w-0.5 border-l bg-white dark:bg-zinc-700"></span>
 
@@ -140,7 +140,7 @@ export default function HeroSection() {
                   <Button
                     asChild
                     size="lg"
-                    className="rounded-xl px-5 text-base"
+                    className="rounded-xl px-5 text-base bg-purple-600 hover:bg-purple-700 text-white"
                   >
                     <Link to="/problems">
                       <span className="text-nowrap">Start Solving</span>
@@ -151,7 +151,7 @@ export default function HeroSection() {
                   key={2}
                   asChild
                   size="lg"
-                  variant="ghost"
+                  variant="outline"
                   className="h-10.5 rounded-xl px-5"
                 >
                   <Link to="/pricing">

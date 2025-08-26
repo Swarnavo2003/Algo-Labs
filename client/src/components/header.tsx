@@ -40,10 +40,12 @@ export const HeroHeader = () => {
               <Link
                 to="/"
                 aria-label="home"
-                className="flex items-center text-xl font-semibold space-x-2"
+                className="flex items-center text-lg font-semibold space-x-2 text-purple-500"
               >
-                <Code2 className="size-6 mr-1" />
-                AlgoLabs
+                <Code2 className="size-5 mr-1" />
+                {!isScrolled && (
+                  <span className="text-lg font-semibold">AlgoLabs</span>
+                )}
               </Link>
 
               <button
@@ -102,7 +104,10 @@ export const HeroHeader = () => {
                 <Button
                   asChild
                   size="sm"
-                  className={cn(isScrolled && "lg:hidden")}
+                  className={cn(
+                    isScrolled && "lg:hidden",
+                    "bg-purple-600 hover:bg-purple-700 text-white"
+                  )}
                 >
                   <Link to="/register">
                     <span>Sign Up</span>
@@ -111,7 +116,10 @@ export const HeroHeader = () => {
                 <Button
                   asChild
                   size="sm"
-                  className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
+                  className={cn(
+                    isScrolled ? "lg:inline-flex" : "hidden",
+                    "bg-purple-600 hover:bg-purple-700 text-white"
+                  )}
                 >
                   <Link to="#">
                     <span>Get Started</span>
