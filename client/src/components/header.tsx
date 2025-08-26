@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import { ModeToggle } from "./mode-toggle";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const menuItems = [
   { name: "About", to: "/" },
@@ -14,6 +16,7 @@ const menuItems = [
 export const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const user = true;
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -40,12 +43,11 @@ export const HeroHeader = () => {
               <Link
                 to="/"
                 aria-label="home"
-                className="flex items-center text-lg font-semibold space-x-2 text-purple-500"
+                className="flex items-center text-lg font-semibold space-x-2"
               >
-                <Code2 className="size-5 mr-1" />
-                {!isScrolled && (
-                  <span className="text-lg font-semibold">AlgoLabs</span>
-                )}
+                <div className="border-2 p-2 rounded-xl flex items-center justify-center bg-purple-500">
+                  <Code2 className="size-5 text-white" />
+                </div>
               </Link>
 
               <button
@@ -89,42 +91,52 @@ export const HeroHeader = () => {
                 </ul>
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                {/* <ModeToggle /> */}
-                <></>
-                <Button
-                  asChild
-                  variant="outline"
-                  size="sm"
-                  className={cn(isScrolled && "lg:hidden")}
-                >
-                  <Link to="/login">
-                    <span>Login</span>
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  size="sm"
-                  className={cn(
-                    isScrolled && "lg:hidden",
-                    "bg-purple-600 hover:bg-purple-700 text-white"
-                  )}
-                >
-                  <Link to="/register">
-                    <span>Sign Up</span>
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  size="sm"
-                  className={cn(
-                    isScrolled ? "lg:inline-flex" : "hidden",
-                    "bg-purple-600 hover:bg-purple-700 text-white"
-                  )}
-                >
-                  <Link to="#">
-                    <span>Get Started</span>
-                  </Link>
-                </Button>
+                {user ? (
+                  <>
+                    <ModeToggle />
+                    <Avatar>
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="sm"
+                      className={cn(isScrolled && "lg:hidden")}
+                    >
+                      <Link to="/login">
+                        <span>Login</span>
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      size="sm"
+                      className={cn(
+                        isScrolled && "lg:hidden",
+                        "bg-purple-600 hover:bg-purple-700 text-white"
+                      )}
+                    >
+                      <Link to="/register">
+                        <span>Sign Up</span>
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      size="sm"
+                      className={cn(
+                        isScrolled ? "lg:inline-flex" : "hidden",
+                        "bg-purple-600 hover:bg-purple-700 text-white"
+                      )}
+                    >
+                      <Link to="#">
+                        <span>Get Started</span>
+                      </Link>
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>
