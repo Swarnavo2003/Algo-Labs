@@ -28,6 +28,7 @@ import {
 } from "../ui/select";
 import { Edit, ExternalLink, MoreHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 const problems = [
   {
@@ -253,81 +254,92 @@ const ProblemsTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredProblems.map((problem) => (
-              <TableRow
-                key={problem.id}
-                className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition-colors border-b border-gray-100 dark:border-gray-800/50"
-              >
-                <TableCell className="text-center">
-                  <Checkbox
-                    checked={problem.solved}
-                    className="mx-auto data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600 dark:data-[state=checked]:bg-green-500 dark:data-[state=checked]:border-green-500 dark:border-gray-600"
-                  />
-                </TableCell>
+            {filteredProblems.length > 0 ? (
+              filteredProblems.map((problem) => (
+                <TableRow
+                  key={problem.id}
+                  className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition-colors border-b border-gray-100 dark:border-gray-800/50"
+                >
+                  <TableCell className="text-center">
+                    <Checkbox
+                      checked={problem.solved}
+                      className="mx-auto data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600 dark:data-[state=checked]:bg-green-500 dark:data-[state=checked]:border-green-500 dark:border-gray-600"
+                    />
+                  </TableCell>
 
-                <TableCell>
-                  <div className="flex flex-wrap">
-                    <span className="font-medium text-gray-900 dark:text-gray-100 hover:text-purple-600 dark:hover:text-purple-400 transition-colors cursor-pointer">
-                      {problem.id}. {problem.title}
-                    </span>
-                  </div>
-                </TableCell>
-
-                <TableCell>
-                  <div className="flex flex-wrap gap-1">
-                    {problem.tags.map((tag, index) => (
-                      <Badge
-                        key={tag}
-                        variant="secondary"
-                        className={`text-xs ${getTagColor(index)} border-0`}
+                  <TableCell>
+                    <div className="flex flex-wrap">
+                      <Link
+                        to={`/problem/${problem.id}`}
+                        className="font-medium text-gray-900 dark:text-gray-100 hover:text-purple-600 dark:hover:text-purple-400 transition-colors cursor-pointer"
                       >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </TableCell>
+                        {problem.id}. {problem.title}
+                      </Link>
+                    </div>
+                  </TableCell>
 
-                <TableCell className="text-center">
-                  <Badge
-                    variant="secondary"
-                    className={`${getDifficultyColor(
-                      problem.difficulty
-                    )} border-0 font-medium`}
-                  >
-                    {problem.difficulty}
-                  </Badge>
-                </TableCell>
-
-                <TableCell>
-                  <div className="flex items-center justify-center gap-1">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400"
+                  <TableCell>
+                    <div className="flex flex-wrap gap-1">
+                      {problem.tags.map((tag, index) => (
+                        <Badge
+                          key={tag}
+                          variant="secondary"
+                          className={`text-xs ${getTagColor(index)} border-0`}
                         >
-                          <MoreHorizontal className="w-4 h-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent
-                        align="end"
-                        className="w-48 dark:bg-gray-900 dark:border-gray-800"
-                      >
-                        <DropdownMenuItem className="dark:hover:bg-gray-800 dark:text-gray-200">
-                          <Edit className="w-4 h-4 mr-2" />
-                          Edit Problem
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="dark:hover:bg-gray-800 dark:text-gray-200">
-                          <ExternalLink className="w-4 h-4 mr-2" />
-                          View Solution
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </TableCell>
+
+                  <TableCell className="text-center">
+                    <Badge
+                      variant="secondary"
+                      className={`${getDifficultyColor(
+                        problem.difficulty
+                      )} border-0 font-medium`}
+                    >
+                      {problem.difficulty}
+                    </Badge>
+                  </TableCell>
+
+                  <TableCell>
+                    <div className="flex items-center justify-center gap-1">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-gray-400"
+                          >
+                            <MoreHorizontal className="w-4 h-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="end"
+                          className="w-48 dark:bg-gray-900 dark:border-gray-800"
+                        >
+                          <DropdownMenuItem className="dark:hover:bg-gray-800 dark:text-gray-200">
+                            <Edit className="w-4 h-4 mr-2" />
+                            Edit Problem
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="dark:hover:bg-gray-800 dark:text-gray-200">
+                            <ExternalLink className="w-4 h-4 mr-2" />
+                            View Solution
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center">
+                  No problems found
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </Card>
