@@ -10,7 +10,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Play, Eye, Edit, MoreHorizontal, ExternalLink } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,6 +26,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Edit, ExternalLink, MoreHorizontal } from "lucide-react";
+import { useMemo, useState } from "react";
 
 const problems = [
   {
@@ -119,38 +120,113 @@ const getTagColor = (index: number) => {
   return colors[index % colors.length];
 };
 
+const difficulties = ["Easy", "Medium", "Hard"];
+const tags = [
+  "Array",
+  "Hash Table",
+  "Linked List",
+  "Math",
+  "Recursion",
+  "String",
+  "Binary Search",
+  "Two Pointers",
+  "Sliding Window",
+  "Stack",
+  "Queue",
+  "Tree",
+  "Binary Tree",
+  "Binary Search Tree",
+  "Heap",
+  "Graph",
+  "Dynamic Programming",
+  "Greedy",
+  "Backtracking",
+  "Divide and Conquer",
+  "Sorting",
+  "Searching",
+  "Bit Manipulation",
+  "Trie",
+  "Union Find",
+  "Topological Sort",
+  "Breadth First Search",
+  "Depth First Search",
+  "Graph Coloring",
+  "Shortest Path",
+];
+
 const ProblemsTable = () => {
+  const [filterData, setFilterData] = useState({
+    input: "",
+    difficulty: "",
+    tags: "",
+  });
+
+  const filteredProblems = useMemo(() => {
+    return problems.filter((problem) => {
+      const matchedTitle = problem.title
+        .toLowerCase()
+        .includes(filterData.input.toLowerCase());
+      const matchesDifficulty =
+        !filterData.difficulty ||
+        problem.difficulty.toLowerCase() ===
+          filterData.difficulty.toLowerCase();
+      const matchedTags =
+        !filterData.tags ||
+        problem.tags.some(
+          (tag) => tag.toLowerCase() === filterData.tags.toLowerCase()
+        );
+      return matchedTitle && matchesDifficulty && matchedTags;
+    });
+  }, [filterData]);
   return (
     <div className="w-full">
       <div className=" flex items-center gap-2 py-4">
-        <Input className="w-[300px]" placeholder="Search By Title" />
-        <Select>
-          <SelectTrigger className="w-[100px]">
-            <SelectValue placeholder="Dificulty" />
+        <Input
+          value={filterData.input}
+          name="input"
+          onChange={(e) =>
+            setFilterData({ ...filterData, input: e.target.value })
+          }
+          className="w-[300px]"
+          placeholder="Search By Title"
+        />
+
+        <Select
+          onValueChange={(value) =>
+            setFilterData({ ...filterData, difficulty: value })
+          }
+        >
+          <SelectTrigger className="w-[150px]">
+            <SelectValue placeholder="Difficulty" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>Fruits</SelectLabel>
-              <SelectItem value="apple">Apple</SelectItem>
-              <SelectItem value="banana">Banana</SelectItem>
-              <SelectItem value="blueberry">Blueberry</SelectItem>
-              <SelectItem value="grapes">Grapes</SelectItem>
-              <SelectItem value="pineapple">Pineapple</SelectItem>
+              <SelectLabel>Difficulty</SelectLabel>
+              {difficulties.map((difficulty) => (
+                <SelectItem key={difficulty} value={difficulty.toLowerCase()}>
+                  {difficulty}
+                </SelectItem>
+              ))}
             </SelectGroup>
           </SelectContent>
         </Select>
-        <Select>
-          <SelectTrigger className="w-[100px]">
+
+        <Select
+          onValueChange={(value) =>
+            setFilterData({ ...filterData, tags: value })
+          }
+        >
+          <SelectTrigger className="w-[150px]">
             <SelectValue placeholder="Tags" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>Fruits</SelectLabel>
-              <SelectItem value="apple">Apple</SelectItem>
-              <SelectItem value="banana">Banana</SelectItem>
-              <SelectItem value="blueberry">Blueberry</SelectItem>
-              <SelectItem value="grapes">Grapes</SelectItem>
-              <SelectItem value="pineapple">Pineapple</SelectItem>
+              <SelectLabel>Tags</SelectLabel>
+              {tags.map((tag) => (
+                <SelectItem key={tag} value={tag.toLowerCase()}>
+                  {tag}
+                </SelectItem>
+              ))}
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -177,7 +253,7 @@ const ProblemsTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {problems.map((problem) => (
+            {filteredProblems.map((problem) => (
               <TableRow
                 key={problem.id}
                 className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition-colors border-b border-gray-100 dark:border-gray-800/50"
@@ -224,24 +300,6 @@ const ProblemsTable = () => {
 
                 <TableCell>
                   <div className="flex items-center justify-center gap-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 w-8 p-0 hover:bg-green-100 hover:text-green-700 dark:hover:bg-green-900/20 dark:hover:text-green-400 dark:text-gray-400"
-                      title="Solve Problem"
-                    >
-                      <Play className="w-4 h-4" />
-                    </Button>
-
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 w-8 p-0 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-900/20 dark:hover:text-blue-400 dark:text-gray-400"
-                      title="View Problem"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Button>
-
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button
