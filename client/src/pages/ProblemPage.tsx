@@ -23,11 +23,11 @@ const ProblemPage = () => {
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={60} minSize={30}>
             <ResizablePanelGroup direction="vertical" className="h-full">
-              <ResizablePanel>
+              <ResizablePanel defaultSize={60} minSize={30}>
                 <CodeEditorArea />
               </ResizablePanel>
               <ResizableHandle withHandle />
-              <ResizablePanel>
+              <ResizablePanel defaultSize={40} minSize={30}>
                 <TestCaseArea />
               </ResizablePanel>
             </ResizablePanelGroup>
