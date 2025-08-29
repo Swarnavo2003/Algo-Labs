@@ -15,10 +15,10 @@ const ProblemPage = () => {
   return (
     <div className="h-screen w-full flex flex-col">
       <ProblemNavbar />
-      <div className="flex flex-1 p-4">
+      <div className="flex flex-1 p-2">
         <ResizablePanelGroup
           direction="horizontal"
-          className="flex-1 w-full border border-border rounded-xl overflow-hidden"
+          className="flex-1 w-full rounded-lg overflow-hidden shadow-xl"
         >
           <ResizablePanel defaultSize={40} minSize={20}>
             <ProblemInformationArea />

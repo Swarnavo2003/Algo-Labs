@@ -1,5 +1,13 @@
+import { Card, CardHeader, CardTitle } from "../ui/card";
+
 const CodeEditorArea = () => {
-  return <div className="px-2 py-4">CodeEditorArea</div>;
+  return (
+    <Card className="rounded-none h-full">
+      <CardHeader>
+        <CardTitle>CodeEditorArea</CardTitle>
+      </CardHeader>
+    </Card>
+  );
 };
 
 export default CodeEditorArea;

@@ -1,40 +1,41 @@
-import { Play, Share } from "lucide-react";
+import { Play, Share2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Select, SelectContent, SelectItem } from "../ui/select";
 import { SelectTrigger } from "@radix-ui/react-select";
+import { ModeToggle } from "../mode-toggle";
 
 const ProblemNavbar = () => {
   return (
-    <nav className="mx-4 mt-3 px-6 py-2 flex items-center justify-between border shadow-sm h-16 rounded-2xl hover:shadow-md transition-all duration-200">
-      <h1 className="text-lg font-semibold truncate max-w-xs">Problem Name</h1>
+    <nav className="mx-2 mt-2 px-4 py-2 flex items-center justify-between border shadow-sm h-12 rounded-lg">
+      <h1 className="text-sm font-semibold truncate max-w-xs">Problem Name</h1>
 
       <div className="flex items-center gap-3">
         <Button
           size={"sm"}
           variant={"outline"}
-          className="h-9 px-3 transition-all duration-200"
+          className="h-8 px-2 transition-all duration-200"
         >
-          <Play className="w-4 h-4" />
+          <Play className="size-3" />
         </Button>
         <Button
           size={"sm"}
           variant={"secondary"}
-          className="h-9 px-4 transition-all duration-200"
+          className="h-8 px-4 text-sm transition-all duration-200"
         >
           Submit
         </Button>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1">
         <Button
-          variant="ghost"
+          variant="outline"
           size="sm"
-          className="h-9 w-9 p-0 transition-colors duration-200"
+          className="size-8 p-0 transition-colors duration-200"
         >
-          <Share className="w-4 h-4" />
+          <Share2 className="w-4 h-4" />
         </Button>
         <Select defaultValue="javascript">
-          <SelectTrigger className="min-w-[100px] h-9 border px-3 py-2 rounded-xl transition-all duration-200 text-sm font-medium">
+          <SelectTrigger className="min-w-[100px] h-9 border px-3 py-2 rounded-sm transition-all duration-200 text-sm font-medium">
             JavaScript
           </SelectTrigger>
           <SelectContent className="min-w-[120px]">
@@ -49,6 +50,7 @@ const ProblemNavbar = () => {
             </SelectItem>
           </SelectContent>
         </Select>
+        <ModeToggle />
       </div>
     </nav>
   );

@@ -1,5 +1,13 @@
+import { Card, CardHeader, CardTitle } from "../ui/card";
+
 const ProblemInformationArea = () => {
-  return <div className="px-2 py-4">ProblemInformationArea</div>;
+  return (
+    <Card className="rounded-none h-full overflow-auto">
+      <CardHeader>
+        <CardTitle>Problem Information</CardTitle>
+      </CardHeader>
+    </Card>
+  );
 };
 
 export default ProblemInformationArea;
