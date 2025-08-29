@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -10,10 +9,8 @@ import CodeEditorArea from "@/components/problem/CodeEditorArea";
 import TestCaseArea from "@/components/problem/TestCaseArea";
 
 const ProblemPage = () => {
-  const { id } = useParams();
-  console.log(id);
   return (
-    <div className="h-screen w-full flex flex-col">
+    <div className="w-full h-screen flex flex-col">
       <ProblemNavbar />
       <div className="flex flex-1 p-2">
         <ResizablePanelGroup
