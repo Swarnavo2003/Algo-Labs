@@ -22,7 +22,7 @@ const CodeEditorArea = () => {
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage);
 
-    const defaultCode = {
+    const defaultCode: Record<string, string> = {
       javascript: "// Write Your JavaScript Code Here",
       java: "// Write Your Java Code Here",
       python: "// Write Your Python Code Here",
