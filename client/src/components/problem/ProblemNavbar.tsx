@@ -1,11 +1,21 @@
-import { Play, Share2 } from "lucide-react";
+import { Home, Play, Share2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { ModeToggle } from "../mode-toggle";
+import { useNavigate } from "react-router-dom";
 
 const ProblemNavbar = () => {
+  const navigate = useNavigate();
   return (
     <nav className="mx-2 mt-2 px-4 py-2 flex items-center justify-between border shadow-sm h-12 rounded-lg">
-      <h1 className="text-sm font-semibold truncate max-w-xs">Problem Name</h1>
+      <div className="flex items-center gap-2">
+        <Home
+          onClick={() => navigate("/problems")}
+          className="size-4 cursor-pointer"
+        />
+        <h1 className="text-sm font-semibold truncate max-w-xs">
+          Problem Name
+        </h1>
+      </div>
 
       <div className="flex items-center gap-3">
         <Button

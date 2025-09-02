@@ -1,7 +1,7 @@
+import type { ProblemResponse } from "@/pages/ProblemPage";
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { ScrollArea } from "../ui/scroll-area";
-import type { ProblemResponse } from "./ProblemInformationArea";
 
 const ProblemDescription = ({ problem }: { problem: ProblemResponse }) => {
   return (
