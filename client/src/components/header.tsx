@@ -5,6 +5,12 @@ import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { ModeToggle } from "./mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 const menuItems = [
   { name: "About", to: "/" },
@@ -94,10 +100,19 @@ export const HeroHeader = () => {
                 {user ? (
                   <>
                     <ModeToggle />
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <Avatar>
+                          <AvatarImage src="https://github.com/shadcn.png" />
+                          <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Profile</DropdownMenuLabel>
+                        <DropdownMenuLabel>Add Problem</DropdownMenuLabel>
+                        <DropdownMenuLabel>Login</DropdownMenuLabel>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </>
                 ) : (
                   <>
