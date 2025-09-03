@@ -29,73 +29,7 @@ import {
 import { Edit, ExternalLink, MoreHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-
-const problems = [
-  {
-    id: 1,
-    title: "Two Sum",
-    solved: true,
-    difficulty: "Easy",
-    tags: ["Array", "Hash Table"],
-    acceptance: "49.2%",
-  },
-  {
-    id: 2,
-    title: "Add Two Numbers",
-    solved: false,
-    difficulty: "Medium",
-    tags: ["Linked List", "Math", "Recursion"],
-    acceptance: "38.7%",
-  },
-  {
-    id: 3,
-    title: "Longest Substring Without Repeating Characters",
-    solved: true,
-    difficulty: "Medium",
-    tags: ["Hash Table", "String", "Sliding Window"],
-    acceptance: "33.8%",
-  },
-  {
-    id: 4,
-    title: "Median of Two Sorted Arrays",
-    solved: false,
-    difficulty: "Hard",
-    tags: ["Array", "Binary Search", "Divide and Conquer"],
-    acceptance: "36.2%",
-  },
-  {
-    id: 5,
-    title: "Longest Palindromic Substring",
-    solved: true,
-    difficulty: "Medium",
-    tags: ["String", "Dynamic Programming"],
-    acceptance: "32.8%",
-  },
-  {
-    id: 6,
-    title: "ZigZag Conversion",
-    solved: false,
-    difficulty: "Medium",
-    tags: ["String"],
-    acceptance: "42.1%",
-  },
-  {
-    id: 7,
-    title: "Reverse Integer",
-    solved: true,
-    difficulty: "Medium",
-    tags: ["Math"],
-    acceptance: "27.3%",
-  },
-  {
-    id: 8,
-    title: "String to Integer (atoi)",
-    solved: false,
-    difficulty: "Medium",
-    tags: ["String"],
-    acceptance: "16.8%",
-  },
-];
+import type { Problem } from "@/types";
 
 const getDifficultyColor = (difficulty: string) => {
   switch (difficulty.toLowerCase()) {
@@ -155,7 +89,7 @@ const tags = [
   "Shortest Path",
 ];
 
-const ProblemsTable = () => {
+const ProblemsTable = ({ problems }: { problems: Problem[] }) => {
   const [filterData, setFilterData] = useState({
     input: "",
     difficulty: "",
@@ -255,14 +189,14 @@ const ProblemsTable = () => {
           </TableHeader>
           <TableBody>
             {filteredProblems.length > 0 ? (
-              filteredProblems.map((problem) => (
+              filteredProblems.map((problem, index) => (
                 <TableRow
                   key={problem.id}
                   className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition-colors border-b border-gray-100 dark:border-gray-800/50"
                 >
                   <TableCell className="text-center">
                     <Checkbox
-                      checked={problem.solved}
+                      // checked={problem.solved}
                       className="mx-auto data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600 dark:data-[state=checked]:bg-green-500 dark:data-[state=checked]:border-green-500 dark:border-gray-600"
                     />
                   </TableCell>
@@ -273,7 +207,7 @@ const ProblemsTable = () => {
                         to={`/problem/${problem.id}`}
                         className="font-medium text-gray-900 dark:text-gray-100 hover:text-purple-600 dark:hover:text-purple-400 transition-colors cursor-pointer"
                       >
-                        {problem.id}. {problem.title}
+                        {index + 1}. {problem.title}
                       </Link>
                     </div>
                   </TableCell>
@@ -317,7 +251,7 @@ const ProblemsTable = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent
                           align="end"
-                          className="w-48 dark:bg-gray-900 dark:border-gray-800"
+                          className="w-36 dark:bg-gray-900 dark:border-gray-800"
                         >
                           <DropdownMenuItem className="dark:hover:bg-gray-800 dark:text-gray-200">
                             <Edit className="w-4 h-4 mr-2" />
