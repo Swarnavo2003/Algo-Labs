@@ -11,6 +11,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useAuthStore } from "@/store/auth-store";
 
 const menuItems = [
   { name: "About", to: "/" },
@@ -20,6 +21,7 @@ const menuItems = [
 ];
 
 export const HeroHeader = () => {
+  const { authUser } = useAuthStore();
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
   const user = true;
@@ -103,8 +105,11 @@ export const HeroHeader = () => {
                     <DropdownMenu>
                       <DropdownMenuTrigger>
                         <Avatar>
-                          <AvatarImage src="https://github.com/shadcn.png" />
-                          <AvatarFallback>CN</AvatarFallback>
+                          <AvatarImage
+                            src={authUser?.image}
+                            className="object-cover"
+                          />
+                          <AvatarFallback>{authUser?.name}</AvatarFallback>
                         </Avatar>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">

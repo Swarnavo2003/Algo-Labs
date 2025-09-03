@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -7,19 +7,50 @@ import ProblemPage from "./pages/ProblemPage";
 import PricingPage from "./pages/PricingPage";
 import ProfilePage from "./pages/ProfilePage";
 import CollaboratePage from "./pages/CollaboratePage";
+import { useAuthStore } from "./store/auth-store";
+import { useEffect } from "react";
 
 function App() {
+  const { authUser, getCurrentUser, isFetchingUser } = useAuthStore();
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
+  if (isFetchingUser) return <div>Loading...</div>;
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/problems" element={<ProblemsPage />} />
-        <Route path="/problem/:id" element={<ProblemPage />} />
-        <Route path="/pricing" element={<PricingPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/collaborate" element={<CollaboratePage />} />
+        <Route
+          path="/login"
+          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/register"
+          element={!authUser ? <RegisterPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/problems"
+          element={authUser ? <ProblemsPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/problem/:id"
+          element={authUser ? <ProblemPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/pricing"
+          element={authUser ? <PricingPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/profile"
+          element={authUser ? <ProfilePage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/collaborate"
+          element={authUser ? <CollaboratePage /> : <Navigate to="/login" />}
+        />
       </Routes>
     </BrowserRouter>
   );
