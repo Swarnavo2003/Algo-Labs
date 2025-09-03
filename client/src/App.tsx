@@ -9,6 +9,7 @@ import ProfilePage from "./pages/ProfilePage";
 import CollaboratePage from "./pages/CollaboratePage";
 import { useAuthStore } from "./store/auth-store";
 import { useEffect } from "react";
+import AlgoLabsLoader from "./components/alogolabs-loader";
 
 function App() {
   const { authUser, getCurrentUser, isFetchingUser } = useAuthStore();
@@ -17,7 +18,7 @@ function App() {
     getCurrentUser();
   }, []);
 
-  if (isFetchingUser) return <div>Loading...</div>;
+  if (isFetchingUser) return <AlgoLabsLoader />;
 
   return (
     <BrowserRouter>
