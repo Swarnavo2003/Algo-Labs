@@ -30,6 +30,7 @@ import { Edit, ExternalLink, MoreHorizontal } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Problem } from "@/types";
+import { useProblemStore } from "@/store/problem-store";
 
 const getDifficultyColor = (difficulty: string) => {
   switch (difficulty.toLowerCase()) {
@@ -90,6 +91,18 @@ const tags = [
 ];
 
 const ProblemsTable = ({ problems }: { problems: Problem[] }) => {
+  const { solvedProblems } = useProblemStore();
+  console.log(solvedProblems);
+
+  const problemsWithSolvedStatus = useMemo(() => {
+    return problems.map((problem) => ({
+      ...problem,
+      solved: solvedProblems.some(
+        (solvedProblem) => solvedProblem.id === problem.id
+      ),
+    }));
+  }, [problems, solvedProblems]);
+
   const [filterData, setFilterData] = useState({
     input: "",
     difficulty: "",
@@ -97,7 +110,7 @@ const ProblemsTable = ({ problems }: { problems: Problem[] }) => {
   });
 
   const filteredProblems = useMemo(() => {
-    return problems.filter((problem) => {
+    return problemsWithSolvedStatus.filter((problem) => {
       const matchedTitle = problem.title
         .toLowerCase()
         .includes(filterData.input.toLowerCase());
@@ -112,7 +125,7 @@ const ProblemsTable = ({ problems }: { problems: Problem[] }) => {
         );
       return matchedTitle && matchesDifficulty && matchedTags;
     });
-  }, [filterData]);
+  }, [filterData, problemsWithSolvedStatus]);
   return (
     <div className="w-full">
       <div className=" flex items-center gap-2 py-4">
@@ -196,7 +209,7 @@ const ProblemsTable = ({ problems }: { problems: Problem[] }) => {
                 >
                   <TableCell className="text-center">
                     <Checkbox
-                      // checked={problem.solved}
+                      checked={problem.solved}
                       className="mx-auto data-[state=checked]:bg-green-600 data-[state=checked]:border-green-600 dark:data-[state=checked]:bg-green-500 dark:data-[state=checked]:border-green-500 dark:border-gray-600"
                     />
                   </TableCell>

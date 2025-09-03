@@ -5,18 +5,23 @@ import { create } from "zustand";
 
 interface ProblemStore {
   problems: Problem[] | [];
+  solvedProblems: Problem[] | [];
   problem: Problem | null;
   isProblemsLoading: boolean;
   isProblemLoading: boolean;
+  isSolvedProblemsLoading: boolean;
   getAllProblems: () => Promise<void>;
   getProblemById: (id: string) => Promise<void>;
+  getSolvedProblems: () => Promise<void>;
 }
 
 export const useProblemStore = create<ProblemStore>((set) => ({
   problems: [],
+  solvedProblems: [],
   problem: null,
   isProblemsLoading: false,
   isProblemLoading: false,
+  isSolvedProblemsLoading: false,
   getAllProblems: async () => {
     try {
       set({ isProblemsLoading: true });
@@ -43,6 +48,20 @@ export const useProblemStore = create<ProblemStore>((set) => ({
       toast.error("Error getting problem by id");
     } finally {
       set({ isProblemLoading: false });
+    }
+  },
+  getSolvedProblems: async () => {
+    try {
+      set({ isSolvedProblemsLoading: true });
+      const response = await axiosInstance.get("/problems/get-solved-problems");
+      if (response.data.success) {
+        set({ solvedProblems: response.data.data.problems });
+      }
+    } catch (error) {
+      console.error("Error getting solved problems", error);
+      toast.error("Error getting solved problems");
+    } finally {
+      set({ isSolvedProblemsLoading: false });
     }
   },
 }));

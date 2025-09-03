@@ -7,15 +7,16 @@ import { PlusCircle } from "lucide-react";
 import { useEffect } from "react";
 
 const ProblemsPage = () => {
-  const { problems, isProblemsLoading, getAllProblems } = useProblemStore();
+  const { problems, isProblemsLoading, getAllProblems, getSolvedProblems } =
+    useProblemStore();
 
   useEffect(() => {
     getAllProblems();
+    getSolvedProblems();
   }, []);
 
   if (isProblemsLoading) return <AlgoLabsLoader />;
 
-  if (problems) console.log(problems);
   return (
     <div className="min-h-screen">
       <HeroHeader />
