@@ -1,17 +1,21 @@
-import type { ProblemResponse } from "@/pages/ProblemPage";
 import { Card, CardContent } from "../ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import type { Problem } from "@/types";
 
-const TestCaseArea = ({ problem }: { problem: ProblemResponse }) => {
+const TestCaseArea = ({ problem }: { problem: Problem }) => {
   return (
     <Card className="rounded-none h-full p-1">
       <Tabs defaultValue="case-1" className="h-full">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="case-1">Case 1</TabsTrigger>
-          <TabsTrigger value="case-2">Case 2</TabsTrigger>
-          <TabsTrigger value="case-3">Case 3</TabsTrigger>
+        <TabsList
+          className={`grid w-full grid-cols-${problem.testcases.length}`}
+        >
+          {problem.testcases.map((_, index) => (
+            <TabsTrigger key={index} value={`case-${index + 1}`}>
+              Case {index + 1}
+            </TabsTrigger>
+          ))}
         </TabsList>
-        {problem.examples.map((example, index) => (
+        {problem.testcases.map((example, index) => (
           <TabsContent key={index} value={`case-${index + 1}`}>
             <Card className="h-full">
               <CardContent className="space-y-2">

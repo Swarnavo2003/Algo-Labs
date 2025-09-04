@@ -1,9 +1,9 @@
-import type { ProblemResponse } from "@/pages/ProblemPage";
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { ScrollArea } from "../ui/scroll-area";
+import type { Problem } from "@/types";
 
-const ProblemDescription = ({ problem }: { problem: ProblemResponse }) => {
+const ProblemDescription = ({ problem }: { problem: Problem }) => {
   return (
     <ScrollArea className="h-[650px] p-2 pr-4">
       <h1 className="text-3xl font-semibold">{problem.title}</h1>
@@ -11,9 +11,9 @@ const ProblemDescription = ({ problem }: { problem: ProblemResponse }) => {
       <div className="mt-4 flex flex-col space-y-1">
         <Badge
           className={`text-white ${
-            problem.difficulty === "Easy" ? "bg-green-500 " : ""
-          } ${problem.difficulty === "Medium" ? "bg-yellow-500" : ""} ${
-            problem.difficulty === "Hard" ? "bg-red-500" : ""
+            problem.difficulty === "EASY" ? "bg-green-500 " : ""
+          } ${problem.difficulty === "MEDIUM" ? "bg-yellow-500" : ""} ${
+            problem.difficulty === "HARD" ? "bg-red-500" : ""
           }`}
         >
           {problem.difficulty}
@@ -32,7 +32,7 @@ const ProblemDescription = ({ problem }: { problem: ProblemResponse }) => {
       <div className="mt-4">
         <h2 className="text-lg font-semibold">Examples</h2>
         <div className="mt-2 flex flex-col space-y-2">
-          {problem.examples.map((example, index) => (
+          {problem.testcases.map((example, index) => (
             <Card key={index}>
               <CardHeader>
                 <CardTitle>Example {index + 1}</CardTitle>
@@ -48,14 +48,7 @@ const ProblemDescription = ({ problem }: { problem: ProblemResponse }) => {
         {problem.constraints && (
           <>
             <h2 className="mt-4 text-lg font-semibold">Constraints</h2>
-            <p className="mt-2">
-              {problem.constraints.map((constraint, index) => (
-                <p key={index}>
-                  {index + 1}.{" "}
-                  <span className="font-semibold pl-2">{constraint}</span>
-                </p>
-              ))}
-            </p>
+            <p className="mt-2">{problem.constraints}</p>
           </>
         )}
       </div>

@@ -3,18 +3,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProblemDescription from "./ProblemDescription";
 import ProblemSubmissions from "./ProblemSubmissions";
 import { Code2, FileText, Lightbulb, MessageSquare } from "lucide-react";
-import type { ProblemResponse } from "@/pages/ProblemPage";
-import { useProblemStore } from "@/store/problem-store";
+import type { Problem } from "@/types";
 
-const ProblemInformationArea = ({ problem }: { problem: ProblemResponse }) => {
-  const { problem: problemById } = useProblemStore();
-
-  if (!problemById) {
-    console.error("No problem found");
-  } else {
-    console.log(problemById);
-  }
-
+const ProblemInformationArea = ({ problem }: { problem: Problem }) => {
   return (
     <Card className="rounded-none p-1">
       <Tabs defaultValue="description">
