@@ -92,7 +92,6 @@ const tags = [
 
 const ProblemsTable = ({ problems }: { problems: Problem[] }) => {
   const { solvedProblems } = useProblemStore();
-  console.log(solvedProblems);
 
   const problemsWithSolvedStatus = useMemo(() => {
     return problems.map((problem) => ({
