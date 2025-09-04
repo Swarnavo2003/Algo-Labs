@@ -21,10 +21,13 @@ const menuItems = [
 ];
 
 export const HeroHeader = () => {
-  const { authUser } = useAuthStore();
+  const { authUser, logoutUser } = useAuthStore();
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
-  const user = true;
+
+  const handleLogout = () => {
+    logoutUser();
+  };
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -99,7 +102,7 @@ export const HeroHeader = () => {
                 </ul>
               </div>
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                {user ? (
+                {authUser ? (
                   <>
                     <ModeToggle />
                     <DropdownMenu>
@@ -115,7 +118,12 @@ export const HeroHeader = () => {
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Profile</DropdownMenuLabel>
                         <DropdownMenuLabel>Add Problem</DropdownMenuLabel>
-                        <DropdownMenuLabel>Login</DropdownMenuLabel>
+                        <DropdownMenuLabel
+                          onClick={handleLogout}
+                          className="cursor-pointer"
+                        >
+                          Logout
+                        </DropdownMenuLabel>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </>

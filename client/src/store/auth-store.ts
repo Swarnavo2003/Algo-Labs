@@ -45,7 +45,19 @@ export const useAuthStore = create<AuthState>()(
         }
       },
       logoutUser: async () => {
-        set({ authUser: null });
+        set({ isLoggingIn: true });
+        try {
+          const response = await axiosInstance.get("/auth/logout");
+          if (response.data.success) {
+            set({ authUser: null, isAuthenticated: false });
+            toast.success(response.data.message);
+          }
+        } catch (error) {
+          console.log(error);
+          set({ isAuthenticated: true });
+        } finally {
+          set({ isLoggingIn: false });
+        }
       },
       registerUser: async () => {
         set({ isRegistering: true });
