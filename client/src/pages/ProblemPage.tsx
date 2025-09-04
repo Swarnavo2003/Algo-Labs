@@ -7,6 +7,10 @@ import ProblemNavbar from "@/components/problem/ProblemNavbar";
 import ProblemInformationArea from "@/components/problem/ProblemInformationArea";
 import CodeEditorArea from "@/components/problem/CodeEditorArea";
 import TestCaseArea from "@/components/problem/TestCaseArea";
+import { useProblemStore } from "@/store/problem-store";
+import AlgoLabsLoader from "@/components/alogolabs-loader";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 interface Example {
   input: string;
@@ -63,6 +67,17 @@ const problemResponse: ProblemResponse = {
 };
 
 const ProblemPage = () => {
+  const { id } = useParams();
+  const { getProblemById, isProblemLoading, problem } = useProblemStore();
+
+  useEffect(() => {
+    if (id) {
+      getProblemById(id);
+    }
+  }, [id]);
+
+  if (isProblemLoading) return <AlgoLabsLoader />;
+
   return (
     <div className="w-full h-screen flex flex-col">
       <ProblemNavbar />
