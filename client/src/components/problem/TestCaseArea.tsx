@@ -6,16 +6,14 @@ const TestCaseArea = ({ problem }: { problem: Problem }) => {
   return (
     <Card className="rounded-none h-full p-1">
       <Tabs defaultValue="case-1" className="h-full">
-        <TabsList
-          className={`grid w-full grid-cols-${problem.testcases.length}`}
-        >
-          {problem.testcases.map((_, index) => (
+        <TabsList className={`flex w-full gap-1`}>
+          {problem.testcases.slice(0, 3).map((_, index) => (
             <TabsTrigger key={index} value={`case-${index + 1}`}>
               Case {index + 1}
             </TabsTrigger>
           ))}
         </TabsList>
-        {problem.testcases.map((example, index) => (
+        {problem.testcases.slice(0, 3).map((example, index) => (
           <TabsContent key={index} value={`case-${index + 1}`}>
             <Card className="h-full">
               <CardContent className="space-y-2">

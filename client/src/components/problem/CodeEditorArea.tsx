@@ -14,18 +14,21 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useState } from "react";
+import type { Problem } from "@/types";
 
-const CodeEditorArea = () => {
+const CodeEditorArea = ({ problem }: { problem: Problem }) => {
   const [language, setLanguage] = useState("javascript");
-  const [code, setCode] = useState("// Write Your Code Here");
+  const [code, setCode] = useState(
+    problem.codeSnippets?.JAVASCRIPT || "// Write Your Code Here"
+  );
 
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage);
 
     const defaultCode: Record<string, string> = {
-      javascript: "// Write Your JavaScript Code Here",
-      java: "// Write Your Java Code Here",
-      python: "// Write Your Python Code Here",
+      javascript: problem.codeSnippets.JAVASCRIPT,
+      java: problem.codeSnippets.JAVA,
+      python: problem.codeSnippets.PYTHON,
     };
 
     setCode(defaultCode[newLanguage] || "// Write Your Code Here");
@@ -52,10 +55,11 @@ const CodeEditorArea = () => {
         <div className="group ring-border relative overflow-hidden rounded-lg ring-1">
           <Editor
             height={"380px"}
-            language="javascript"
+            language={language}
             defaultLanguage={language}
             value={code}
             theme="vs-dark"
+            onChange={(value) => setCode(value || "")}
             defaultValue="// Write Your Code Here"
             options={{
               automaticLayout: true,

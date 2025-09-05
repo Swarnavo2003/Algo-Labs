@@ -24,9 +24,11 @@ const ProblemPage = () => {
 
   if (isProblemLoading) return <AlgoLabsLoader />;
 
+  if (problem) console.log(problem);
+
   return (
     <div className="w-full h-screen flex flex-col">
-      <ProblemNavbar />
+      {problem && <ProblemNavbar title={problem?.title} />}
       <div className="flex flex-1 p-2">
         <ResizablePanelGroup
           direction="horizontal"
@@ -39,7 +41,7 @@ const ProblemPage = () => {
           <ResizablePanel defaultSize={60} minSize={30}>
             <ResizablePanelGroup direction="vertical" className="h-full">
               <ResizablePanel defaultSize={60} minSize={30}>
-                <CodeEditorArea />
+                {problem && <CodeEditorArea problem={problem} />}
               </ResizablePanel>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={40} minSize={30}>
