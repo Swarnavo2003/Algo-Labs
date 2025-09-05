@@ -40,6 +40,13 @@ export interface Problem {
   updatedAt: string;
 }
 
+export interface RunType {
+  source_code: string;
+  language_id: number;
+  stdin: string[];
+  expected_output: string[];
+}
+
 export interface Submission {
   source_code: string;
   language_id: number;
@@ -105,3 +112,9 @@ export interface SubmissionResponse {
     }[];
   };
 }
+
+export const LANGUAGE_MAP: Record<string, number> = {
+  javascript: 63,
+  java: 62,
+  python: 71,
+};

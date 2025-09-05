@@ -1,5 +1,10 @@
 import { axiosInstance } from "@/lib/axios";
-import type { RunSummary, Submission, SubmissionResponse } from "@/types";
+import type {
+  RunSummary,
+  RunType,
+  Submission,
+  SubmissionResponse,
+} from "@/types";
 import { toast } from "sonner";
 import { create } from "zustand";
 
@@ -8,7 +13,7 @@ interface ExecutionStore {
   isSubmitting: boolean;
   runResult: RunSummary | null;
   submissionResult: SubmissionResponse | null;
-  runCode: (code: Submission) => Promise<void>;
+  runCode: (code: RunType) => Promise<void>;
   submitCode: (code: Submission) => Promise<void>;
   clearSubmission: () => void;
 }
@@ -18,7 +23,7 @@ export const useExecutionStore = create<ExecutionStore>((set) => ({
   isSubmitting: false,
   runResult: null,
   submissionResult: null,
-  runCode: async (code: Submission) => {
+  runCode: async (code: RunType) => {
     try {
       set({ isRunning: true });
       const response = await axiosInstance.post("/execute-code/run", code);

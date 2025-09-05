@@ -1,12 +1,38 @@
 import { Home, Loader2, Play, Share2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { ModeToggle } from "../mode-toggle";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useExecutionStore } from "@/store/execution-store";
+import { useEditorStore } from "@/store/editor-store";
+import { LANGUAGE_MAP } from "@/types";
 
 const ProblemNavbar = ({ title }: { title: string }) => {
-  const { isRunning, isSubmitting } = useExecutionStore();
+  const { isRunning, isSubmitting, runCode, submitCode } = useExecutionStore();
+  const { code, language } = useEditorStore();
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  console.log(id);
+
+  const handleRunCode = async () => {
+    await runCode({
+      source_code: code,
+      stdin: [],
+      expected_output: [],
+      language_id: LANGUAGE_MAP[language],
+    });
+  };
+
+  const handleSubmitCode = async () => {
+    await submitCode({
+      source_code: code,
+      stdin: [],
+      expected_output: [],
+      language_id: LANGUAGE_MAP[language],
+      problemId: id as string,
+    });
+  };
+
   return (
     <nav className="mx-2 mt-2 px-4 py-2 flex items-center justify-between border shadow-sm h-12 rounded-lg">
       <div className="flex items-center gap-2">
@@ -21,6 +47,7 @@ const ProblemNavbar = ({ title }: { title: string }) => {
         <Button
           size={"sm"}
           variant={"outline"}
+          onClick={handleRunCode}
           className="h-8 px-2 transition-all duration-200"
         >
           {isRunning ? (
@@ -31,6 +58,7 @@ const ProblemNavbar = ({ title }: { title: string }) => {
         </Button>
         <Button
           size={"sm"}
+          onClick={handleSubmitCode}
           variant={"secondary"}
           className="h-8 px-4 text-sm transition-all duration-200"
         >
