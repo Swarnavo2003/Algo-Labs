@@ -13,14 +13,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useState } from "react";
 import type { Problem } from "@/types";
+import { useEditorStore } from "@/store/editor-store";
+import { useEffect } from "react";
 
 const CodeEditorArea = ({ problem }: { problem: Problem }) => {
-  const [language, setLanguage] = useState("javascript");
-  const [code, setCode] = useState(
-    problem.codeSnippets?.JAVASCRIPT || "// Write Your Code Here"
-  );
+  const { language, setLanguage, code, setCode, reset } = useEditorStore();
+
+  useEffect(() => {
+    reset(problem.codeSnippets.JAVASCRIPT);
+  }, [problem]);
 
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage);

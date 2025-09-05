@@ -11,20 +11,21 @@ import { useProblemStore } from "@/store/problem-store";
 import AlgoLabsLoader from "@/components/alogolabs-loader";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useExecutionStore } from "@/store/execution-store";
 
 const ProblemPage = () => {
   const { id } = useParams();
   const { getProblemById, isProblemLoading, problem } = useProblemStore();
+  const { clearSubmission } = useExecutionStore();
 
   useEffect(() => {
     if (id) {
       getProblemById(id);
     }
+    clearSubmission();
   }, [id]);
 
   if (isProblemLoading) return <AlgoLabsLoader />;
-
-  if (problem) console.log(problem);
 
   return (
     <div className="w-full h-screen flex flex-col">

@@ -1,9 +1,11 @@
-import { Home, Play, Share2 } from "lucide-react";
+import { Home, Loader2, Play, Share2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { ModeToggle } from "../mode-toggle";
 import { useNavigate } from "react-router-dom";
+import { useExecutionStore } from "@/store/execution-store";
 
 const ProblemNavbar = ({ title }: { title: string }) => {
+  const { isRunning, isSubmitting } = useExecutionStore();
   const navigate = useNavigate();
   return (
     <nav className="mx-2 mt-2 px-4 py-2 flex items-center justify-between border shadow-sm h-12 rounded-lg">
@@ -21,14 +23,25 @@ const ProblemNavbar = ({ title }: { title: string }) => {
           variant={"outline"}
           className="h-8 px-2 transition-all duration-200"
         >
-          <Play className="size-3" />
+          {isRunning ? (
+            <Loader2 className="size-3 animate-spin" />
+          ) : (
+            <Play className="size-3" />
+          )}
         </Button>
         <Button
           size={"sm"}
           variant={"secondary"}
           className="h-8 px-4 text-sm transition-all duration-200"
         >
-          Submit
+          {isSubmitting ? (
+            <>
+              <Loader2 className="size-3 animate-spin" />
+              Wait
+            </>
+          ) : (
+            "Submit"
+          )}
         </Button>
       </div>
 
