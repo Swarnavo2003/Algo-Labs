@@ -39,3 +39,69 @@ export interface Problem {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Submission {
+  source_code: string;
+  language_id: number;
+  stdin: string[];
+  expected_output: string[];
+  problemId: string;
+}
+
+export interface RunSummary {
+  language: string;
+  allPassed: boolean;
+  totalTestCases: number;
+  passedTestCases: number;
+  testResults: {
+    testCase: number;
+    input: string;
+    passed: boolean;
+    stdout: string;
+    expected: string;
+    stderr: string | null;
+    compile_output: string | null;
+    status: string;
+    memory: string;
+    time: string;
+  }[];
+  summary: {
+    status: string;
+    executionTime: string;
+    memoryUsed: string;
+  };
+}
+
+export interface SubmissionResponse {
+  submission: {
+    id: string;
+    userId: string;
+    problemId: string;
+    sourceCode: string;
+    language: string;
+    stdin: string;
+    stdout: string;
+    stderr: string | null;
+    compileOutput: string | null;
+    status: string;
+    memory: string;
+    time: string;
+    createdAt: string;
+    updatedAt: string;
+    testCases: {
+      id: string;
+      submissionId: string;
+      testCase: number;
+      passed: boolean;
+      stdout: string;
+      expected: string;
+      stderr: string | null;
+      compileOutput: string | null;
+      status: string;
+      memory: string;
+      time: string;
+      createdAt: string;
+      updatedAt: string;
+    }[];
+  };
+}
