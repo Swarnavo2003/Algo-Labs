@@ -32,7 +32,7 @@ const ProblemDescription = ({ problem }: { problem: Problem }) => {
       <div className="mt-4">
         <h2 className="text-lg font-semibold">Examples</h2>
         <div className="mt-2 flex flex-col space-y-2">
-          {problem.testcases.map((example, index) => (
+          {problem.testcases.slice(0, 3).map((example, index) => (
             <Card key={index}>
               <CardHeader>
                 <CardTitle>Example {index + 1}</CardTitle>
