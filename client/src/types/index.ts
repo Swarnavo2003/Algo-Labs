@@ -80,14 +80,27 @@ export interface RunSummary {
 }
 
 export interface SubmissionResponse {
-  submission: {
+  id: string;
+  userId: string;
+  problemId: string;
+  sourceCode: string;
+  language: string;
+  stdin: string;
+  stdout: string;
+  stderr: string | null;
+  compileOutput: string | null;
+  status: string;
+  memory: string;
+  time: string;
+  createdAt: string;
+  updatedAt: string;
+  testCases: {
     id: string;
-    userId: string;
-    problemId: string;
-    sourceCode: string;
-    language: string;
-    stdin: string;
+    submissionId: string;
+    testCase: number;
+    passed: boolean;
     stdout: string;
+    expected: string;
     stderr: string | null;
     compileOutput: string | null;
     status: string;
@@ -95,22 +108,7 @@ export interface SubmissionResponse {
     time: string;
     createdAt: string;
     updatedAt: string;
-    testCases: {
-      id: string;
-      submissionId: string;
-      testCase: number;
-      passed: boolean;
-      stdout: string;
-      expected: string;
-      stderr: string | null;
-      compileOutput: string | null;
-      status: string;
-      memory: string;
-      time: string;
-      createdAt: string;
-      updatedAt: string;
-    }[];
-  };
+  }[];
 }
 
 export const LANGUAGE_MAP: Record<string, number> = {

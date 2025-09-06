@@ -24,8 +24,8 @@ const ProblemNavbar = ({ title }: { title: string }) => {
   const handleSubmitCode = async () => {
     await submitCode({
       source_code: code,
-      stdin: [],
-      expected_output: [],
+      stdin: testCases.map((testCase) => testCase.stdin),
+      expected_output: testCases.map((testCase) => testCase.expected_output),
       language_id: LANGUAGE_MAP[language],
       problemId: id as string,
     });
