@@ -8,17 +8,15 @@ import { LANGUAGE_MAP } from "@/types";
 
 const ProblemNavbar = ({ title }: { title: string }) => {
   const { isRunning, isSubmitting, runCode, submitCode } = useExecutionStore();
-  const { code, language } = useEditorStore();
+  const { code, language, testCases } = useEditorStore();
   const { id } = useParams();
   const navigate = useNavigate();
-
-  console.log(id);
 
   const handleRunCode = async () => {
     await runCode({
       source_code: code,
-      stdin: [],
-      expected_output: [],
+      stdin: testCases.map((testCase) => testCase.stdin),
+      expected_output: testCases.map((testCase) => testCase.expected_output),
       language_id: LANGUAGE_MAP[language],
     });
   };
@@ -48,7 +46,7 @@ const ProblemNavbar = ({ title }: { title: string }) => {
           size={"sm"}
           variant={"outline"}
           onClick={handleRunCode}
-          className="h-8 px-2 transition-all duration-200"
+          className="h-8 px-2 transition-all duration-200 cursor-pointer"
         >
           {isRunning ? (
             <Loader2 className="size-3 animate-spin" />

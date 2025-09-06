@@ -18,10 +18,17 @@ import { useEditorStore } from "@/store/editor-store";
 import { useEffect } from "react";
 
 const CodeEditorArea = ({ problem }: { problem: Problem }) => {
-  const { language, setLanguage, code, setCode, reset } = useEditorStore();
+  const { language, setLanguage, code, setCode, reset, setTestCases } =
+    useEditorStore();
 
   useEffect(() => {
     reset(problem.codeSnippets.JAVASCRIPT);
+    setTestCases(
+      problem.testcases.map((tc) => ({
+        stdin: tc.input,
+        expected_output: tc.output,
+      }))
+    );
   }, [problem]);
 
   const handleLanguageChange = (newLanguage: string) => {
