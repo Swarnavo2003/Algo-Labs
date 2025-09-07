@@ -4,8 +4,21 @@ import ProblemDescription from "./ProblemDescription";
 import ProblemSubmissions from "./ProblemSubmissions";
 import { Code2, FileText, Lightbulb, MessageSquare } from "lucide-react";
 import type { Problem } from "@/types";
+import { useParams } from "react-router-dom";
+import { useSubmissionStore } from "@/store/submission-store";
+import { useEffect } from "react";
 
 const ProblemInformationArea = ({ problem }: { problem: Problem }) => {
+  const { id: problemId } = useParams();
+
+  const { getSubmissionsForProblem } = useSubmissionStore();
+
+  useEffect(() => {
+    if (problemId) {
+      getSubmissionsForProblem(problemId);
+    }
+  }, [problemId]);
+
   return (
     <Card className="rounded-none p-1">
       <Tabs defaultValue="description">
