@@ -68,5 +68,20 @@ export const useSubmissionStore = create<SubmissionStore>((set) => ({
       set({ isLoading: false });
     }
   },
-  getAllSubmissionsForProblem: async () => {},
+  getAllSubmissionsForProblem: async (problemId: string) => {
+    try {
+      set({ isLoading: true });
+      const response = await axiosInstance.get(
+        `/submission/get-submission-count/${problemId}`
+      );
+      if (response.data.success) {
+        set({ allSubmissions: response.data.data.submission });
+      }
+    } catch (error) {
+      console.error("Error fetching problem submissions", error);
+      toast.error("Error fetching problem submissions");
+    } finally {
+      set({ isLoading: false });
+    }
+  },
 }));

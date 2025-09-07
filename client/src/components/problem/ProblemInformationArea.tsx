@@ -6,22 +6,33 @@ import { Code2, FileText, Lightbulb, MessageSquare } from "lucide-react";
 import type { Problem } from "@/types";
 import { useParams } from "react-router-dom";
 import { useSubmissionStore } from "@/store/submission-store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useExecutionStore } from "@/store/execution-store";
 
 const ProblemInformationArea = ({ problem }: { problem: Problem }) => {
   const { id: problemId } = useParams();
-
-  const { getSubmissionsForProblem } = useSubmissionStore();
+  const { runResult, submissionResult } = useExecutionStore();
+  const { getSubmissionsForProblem, getAllSubmissionsForProblem } =
+    useSubmissionStore();
+  const [activeTab, setActiveTab] = useState("description");
 
   useEffect(() => {
     if (problemId) {
       getSubmissionsForProblem(problemId);
+      getAllSubmissionsForProblem(problemId);
     }
-  }, [problemId]);
+    if (submissionResult) {
+      setActiveTab("submission");
+    }
+  }, [problemId, runResult, submissionResult]);
 
   return (
     <Card className="rounded-none p-1">
-      <Tabs defaultValue="description">
+      <Tabs
+        defaultValue="description"
+        value={activeTab}
+        onValueChange={setActiveTab}
+      >
         <TabsList className="grid w-full grid-cols-4 rounded-lg">
           <TabsTrigger value="description">
             <FileText />

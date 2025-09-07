@@ -1,13 +1,17 @@
+import { useSubmissionStore } from "@/store/submission-store";
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { ScrollArea } from "../ui/scroll-area";
 import type { Problem } from "@/types";
 
 const ProblemDescription = ({ problem }: { problem: Problem }) => {
+  const { allSubmissions } = useSubmissionStore();
   return (
     <ScrollArea className="h-[650px] p-2 pr-4">
       <h1 className="text-3xl font-semibold">{problem.title}</h1>
-
+      <p className="mt-2 text-sm text-gray-300">
+        {allSubmissions.length} submissions
+      </p>
       <div className="mt-4 flex flex-col space-y-1">
         <Badge
           className={`text-white ${

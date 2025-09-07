@@ -14,6 +14,9 @@ export const getAllSubmissions = asyncHandler(async (req, res) => {
     where: {
       userId,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   if (!submission) {
@@ -42,6 +45,9 @@ export const getSubmissionForProblem = asyncHandler(async (req, res) => {
       userId: userId,
       problemId: problemId,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   if (!submission) {
@@ -65,6 +71,9 @@ export const getAllSubmissionsForProblem = asyncHandler(async (req, res) => {
   const submission = await db.submission.findMany({
     where: {
       problemId: problemId,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
