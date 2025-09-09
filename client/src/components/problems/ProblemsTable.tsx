@@ -2,6 +2,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -31,6 +32,14 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Problem } from "@/types";
 import { useProblemStore } from "@/store/problem-store";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "../ui/pagination";
 
 const getDifficultyColor = (difficulty: string) => {
   switch (difficulty.toLowerCase()) {
@@ -108,8 +117,29 @@ const ProblemsTable = ({ problems }: { problems: Problem[] }) => {
     tags: "",
   });
 
-  const filteredProblems = useMemo(() => {
-    return problemsWithSolvedStatus.filter((problem) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  // const filteredProblems = useMemo(() => {
+  //   return problemsWithSolvedStatus.filter((problem) => {
+  //     const matchedTitle = problem.title
+  //       .toLowerCase()
+  //       .includes(filterData.input.toLowerCase());
+  //     const matchesDifficulty =
+  //       !filterData.difficulty ||
+  //       problem.difficulty.toLowerCase() ===
+  //         filterData.difficulty.toLowerCase();
+  //     const matchedTags =
+  //       !filterData.tags ||
+  //       problem.tags.some(
+  //         (tag) => tag.toLowerCase() === filterData.tags.toLowerCase()
+  //       );
+  //     return matchedTitle && matchesDifficulty && matchedTags;
+  //   });
+  // }, [filterData, problemsWithSolvedStatus]);
+
+  const { paginatedProblems, totalPages } = useMemo(() => {
+    const filtered = problemsWithSolvedStatus.filter((problem) => {
       const matchedTitle = problem.title
         .toLowerCase()
         .includes(filterData.input.toLowerCase());
@@ -124,7 +154,16 @@ const ProblemsTable = ({ problems }: { problems: Problem[] }) => {
         );
       return matchedTitle && matchesDifficulty && matchedTags;
     });
-  }, [filterData, problemsWithSolvedStatus]);
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const paginatedProblems = filtered.slice(
+      startIndex,
+      startIndex + itemsPerPage
+    );
+    const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
+    return { paginatedProblems, totalPages };
+  }, [filterData, problemsWithSolvedStatus, currentPage]);
   return (
     <div className="w-full">
       <div className=" flex items-center gap-2 py-4">
@@ -200,8 +239,8 @@ const ProblemsTable = ({ problems }: { problems: Problem[] }) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredProblems.length > 0 ? (
-              filteredProblems.map((problem, index) => (
+            {paginatedProblems.length > 0 ? (
+              paginatedProblems.map((problem, index) => (
                 <TableRow
                   key={problem.id}
                   className="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition-colors border-b border-gray-100 dark:border-gray-800/50"
@@ -287,6 +326,62 @@ const ProblemsTable = ({ problems }: { problems: Problem[] }) => {
               </TableRow>
             )}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell colSpan={5} className="p-0">
+                <div className="flex bg-background justify-center pt-3">
+                  {totalPages > 1 && (
+                    <Pagination>
+                      <PaginationContent>
+                        <PaginationItem>
+                          <PaginationPrevious
+                            onClick={() =>
+                              setCurrentPage(Math.max(currentPage - 1, 1))
+                            }
+                            className={
+                              currentPage === 1
+                                ? "pointer-events-none opacity-50"
+                                : "cursor-pointer"
+                            }
+                          />
+                        </PaginationItem>
+
+                        {Array.from(
+                          { length: Math.min(totalPages, 5) },
+                          (_, i) => (
+                            <PaginationItem key={i + 1}>
+                              <PaginationLink
+                                onClick={() => setCurrentPage(i + 1)}
+                                isActive={currentPage === i + 1}
+                                className="cursor-pointer"
+                              >
+                                {i + 1}
+                              </PaginationLink>
+                            </PaginationItem>
+                          )
+                        )}
+
+                        <PaginationItem>
+                          <PaginationNext
+                            onClick={() =>
+                              setCurrentPage(
+                                Math.min(currentPage + 1, totalPages)
+                              )
+                            }
+                            className={
+                              currentPage === totalPages
+                                ? "pointer-events-none opacity-50"
+                                : "cursor-pointer"
+                            }
+                          />
+                        </PaginationItem>
+                      </PaginationContent>
+                    </Pagination>
+                  )}
+                </div>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
         </Table>
       </Card>
     </div>

@@ -80,7 +80,7 @@ export const createProblem = asyncHandler(async (req, res) => {
 
     for (let i = 0; i < results.length; i++) {
       const result = results[i];
-      console.log("Result: ", result);
+      // console.log("Result: ", result);
 
       if (result.status.id !== 3) {
         throw new ApiError(
