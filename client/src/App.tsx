@@ -10,6 +10,7 @@ import CollaboratePage from "./pages/CollaboratePage";
 import { useAuthStore } from "./store/auth-store";
 import { useEffect } from "react";
 import AlgoLabsLoader from "./components/alogolabs-loader";
+import AddProblemPage from "./pages/AddProblemPage";
 
 function App() {
   const { authUser, getCurrentUser, isFetchingUser } = useAuthStore();
@@ -31,6 +32,10 @@ function App() {
         <Route
           path="/register"
           element={!authUser ? <RegisterPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/add-problem"
+          element={authUser ? <AddProblemPage /> : <Navigate to="/login" />}
         />
         <Route
           path="/problems"

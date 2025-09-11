@@ -2,7 +2,7 @@ import { Code2, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ModeToggle } from "./mode-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
@@ -24,6 +24,7 @@ export const HeroHeader = () => {
   const { authUser, logoutUser } = useAuthStore();
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logoutUser();
@@ -117,7 +118,12 @@ export const HeroHeader = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Profile</DropdownMenuLabel>
-                        <DropdownMenuLabel>Add Problem</DropdownMenuLabel>
+                        <DropdownMenuLabel
+                          onClick={() => navigate("/add-problem")}
+                          className="cursor-pointer"
+                        >
+                          Add Problem
+                        </DropdownMenuLabel>
                         <DropdownMenuLabel
                           onClick={handleLogout}
                           className="cursor-pointer"
