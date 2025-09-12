@@ -443,7 +443,7 @@ const CreateProblemForm = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {tagFields?.map((field, index) => (
+                  {tagFields?.map((_, index) => (
                     <div
                       key={`tag-${index}`}
                       className="flex items-center gap-2"
