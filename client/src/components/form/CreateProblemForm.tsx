@@ -33,6 +33,8 @@ import {
   ArrowDown,
   Loader2,
 } from "lucide-react";
+import { useProblemStore } from "@/store/problem-store";
+import { useNavigate } from "react-router-dom";
 
 const exampleSchema = z.object({
   input: z.string().trim().min(1, "Input is required"),
@@ -87,55 +89,158 @@ const problemSchema = z.object({
 
 export type ProblemValues = z.infer<typeof problemSchema>;
 
-// Sample data for quick testing
 const sampledpData = {
   title: "Fibonacci Number",
   description:
-    "The Fibonacci numbers, commonly denoted F(n) form a sequence, called the Fibonacci sequence, such that each number is the sum of the two preceding ones, starting from 0 and 1.",
+    "The Fibonacci numbers, commonly denoted F(n) form a sequence, called the Fibonacci sequence, such that each number is the sum of the two preceding ones, starting from 0 and 1. That is, F(0) = 0, F(1) = 1, and F(n) = F(n-1) + F(n-2) for n > 1.",
   difficulty: "EASY" as const,
   tags: ["Dynamic Programming", "Math", "Recursion"],
   constraints: "0 <= n <= 30",
-  hints: "Use memoization to avoid redundant calculations",
-  editorial: "This problem can be solved using dynamic programming approach...",
+  hints:
+    "Use memoization to avoid redundant calculations or iterative approach with O(1) space",
+  editorial:
+    "This problem can be solved using dynamic programming approach. We can use either bottom-up DP with O(n) space, or optimize to O(1) space by keeping track of only the last two numbers.",
   testcases: [
+    { input: "0", output: "0" },
+    { input: "1", output: "1" },
     { input: "2", output: "1" },
     { input: "3", output: "2" },
     { input: "4", output: "3" },
+    { input: "5", output: "5" },
   ],
   examples: {
     JAVASCRIPT: {
-      input: "2",
-      output: "1",
-      explanation: "F(2) = F(1) + F(0) = 1 + 0 = 1",
+      input: "4",
+      output: "3",
+      explanation:
+        "F(4) = F(3) + F(2) = 2 + 1 = 3. The sequence is: F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3",
     },
     PYTHON: {
-      input: "2",
-      output: "1",
-      explanation: "F(2) = F(1) + F(0) = 1 + 0 = 1",
+      input: "4",
+      output: "3",
+      explanation:
+        "F(4) = F(3) + F(2) = 2 + 1 = 3. The sequence is: F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3",
     },
     JAVA: {
-      input: "2",
-      output: "1",
-      explanation: "F(2) = F(1) + F(0) = 1 + 0 = 1",
+      input: "4",
+      output: "3",
+      explanation:
+        "F(4) = F(3) + F(2) = 2 + 1 = 3. The sequence is: F(0)=0, F(1)=1, F(2)=1, F(3)=2, F(4)=3",
     },
   },
   codeSnippets: {
-    JAVASCRIPT: "function fib(n) {\n  // Write your code here\n}",
-    PYTHON: "def fib(n):\n    # Write your code here\n    pass",
-    JAVA: "class Solution {\n    public int fib(int n) {\n        // Write your code here\n    }\n}",
+    JAVASCRIPT: `const readline = require('readline');
+
+function fib(n) {
+    // Write your code here
+    return 0;
+}
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+rl.on('line', (line) => {
+    const n = parseInt(line.trim());
+    const result = fib(n);
+    console.log(result);
+    rl.close();
+});`,
+    PYTHON: `def fib(n):
+    # Write your code here
+    return 0
+
+import sys
+n = int(sys.stdin.read().strip())
+result = fib(n)
+print(result)`,
+    JAVA: `import java.util.Scanner;
+
+public class Main {
+    public static int fib(int n) {
+        // Write your code here
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int result = fib(n);
+        System.out.println(result);
+        sc.close();
+    }
+}`,
   },
   referenceSolutions: {
-    JAVASCRIPT:
-      "function fib(n) {\n  if (n <= 1) return n;\n  let dp = [0, 1];\n  for (let i = 2; i <= n; i++) {\n    dp[i] = dp[i-1] + dp[i-2];\n  }\n  return dp[n];\n}",
-    PYTHON:
-      "def fib(n):\n    if n <= 1:\n        return n\n    dp = [0] * (n + 1)\n    dp[1] = 1\n    for i in range(2, n + 1):\n        dp[i] = dp[i-1] + dp[i-2]\n    return dp[n]",
-    JAVA: "class Solution {\n    public int fib(int n) {\n        if (n <= 1) return n;\n        int[] dp = new int[n + 1];\n        dp[1] = 1;\n        for (int i = 2; i <= n; i++) {\n            dp[i] = dp[i-1] + dp[i-2];\n        }\n        return dp[n];\n    }\n}",
+    JAVASCRIPT: `const readline = require('readline');
+
+function fib(n) {
+    if (n <= 1) return n;
+    
+    let prev = 0, curr = 1;
+    for (let i = 2; i <= n; i++) {
+        let next = prev + curr;
+        prev = curr;
+        curr = next;
+    }
+    return curr;
+}
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+rl.on('line', (line) => {
+    const n = parseInt(line.trim());
+    const result = fib(n);
+    console.log(result);
+    rl.close();
+});`,
+    PYTHON: `def fib(n):
+    if n <= 1:
+        return n
+    
+    prev, curr = 0, 1
+    for i in range(2, n + 1):
+        prev, curr = curr, prev + curr
+    return curr
+
+import sys
+n = int(sys.stdin.read().strip())
+result = fib(n)
+print(result)`,
+    JAVA: `import java.util.Scanner;
+
+public class Main {
+    public static int fib(int n) {
+        if (n <= 1) return n;
+        
+        int prev = 0, curr = 1;
+        for (int i = 2; i <= n; i++) {
+            int next = prev + curr;
+            prev = curr;
+            curr = next;
+        }
+        return curr;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int result = fib(n);
+        System.out.println(result);
+        sc.close();
+    }
+}`,
   },
 };
 
 const CreateProblemForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [sampleType, setSampleType] = useState("DP");
+  const { isCreatingProblem, createProblem } = useProblemStore();
+  const navigate = useNavigate();
 
   const form = useForm<ProblemValues>({
     resolver: zodResolver(problemSchema),
@@ -203,11 +308,10 @@ const CreateProblemForm = () => {
 
   const onSubmit = async (values: ProblemValues) => {
     try {
-      setIsLoading(true);
-      console.log("Form submitted:", values);
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      alert("Problem created successfully!");
+      await createProblem(values);
+      if (!isCreatingProblem) {
+        navigate("/problems");
+      }
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -225,24 +329,6 @@ const CreateProblemForm = () => {
           </CardTitle>
 
           <div className="flex flex-col md:flex-row gap-3">
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => setSampleType("DP")}
-              >
-                DP Problem
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => setSampleType("ST")}
-              >
-                String Problem
-              </Button>
-            </div>
             <Button
               variant="secondary"
               size="sm"
@@ -499,7 +585,7 @@ const CreateProblemForm = () => {
                                   <Editor
                                     height="300px"
                                     language={language.toLowerCase()}
-                                    theme="vs-light"
+                                    theme="vs-dark"
                                     value={field.value}
                                     onChange={field.onChange}
                                     options={{
@@ -538,7 +624,7 @@ const CreateProblemForm = () => {
                                   <Editor
                                     height="300px"
                                     language={language.toLowerCase()}
-                                    theme="vs-light"
+                                    theme="vs-dark"
                                     value={field.value}
                                     onChange={field.onChange}
                                     options={{
@@ -694,7 +780,7 @@ const CreateProblemForm = () => {
                 disabled={isLoading}
                 className="min-w-32"
               >
-                {isLoading ? (
+                {isCreatingProblem ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Creating...

@@ -1,3 +1,4 @@
+import type { ProblemValues } from "@/components/form/CreateProblemForm";
 import { axiosInstance } from "@/lib/axios";
 import type { Problem } from "@/types";
 import { toast } from "sonner";
@@ -9,10 +10,12 @@ interface ProblemStore {
   problem: Problem | null;
   isProblemsLoading: boolean;
   isProblemLoading: boolean;
+  isCreatingProblem: boolean;
   isSolvedProblemsLoading: boolean;
   getAllProblems: () => Promise<void>;
   getProblemById: (id: string) => Promise<void>;
   getSolvedProblems: () => Promise<void>;
+  createProblem: (problem: ProblemValues) => Promise<void>;
 }
 
 export const useProblemStore = create<ProblemStore>((set) => ({
@@ -21,6 +24,7 @@ export const useProblemStore = create<ProblemStore>((set) => ({
   problem: null,
   isProblemsLoading: false,
   isProblemLoading: false,
+  isCreatingProblem: false,
   isSolvedProblemsLoading: false,
   getAllProblems: async () => {
     try {
@@ -62,6 +66,23 @@ export const useProblemStore = create<ProblemStore>((set) => ({
       toast.error("Error getting solved problems");
     } finally {
       set({ isSolvedProblemsLoading: false });
+    }
+  },
+  createProblem: async (problem: ProblemValues) => {
+    try {
+      set({ isCreatingProblem: true });
+      const response = await axiosInstance.post(
+        "/problems/create-problem",
+        problem
+      );
+      if (response.data.success) {
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error creating problem", error);
+      toast.error("Error creating problem");
+    } finally {
+      set({ isCreatingProblem: false });
     }
   },
 }));
