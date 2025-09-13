@@ -87,3 +87,36 @@ export const getAllSubmissionsForProblem = asyncHandler(async (req, res) => {
       new ApiResponse(200, {submission}, "Submissions Fetched Successfully"),
     );
 });
+
+export const getSubmissionHeatmapData = asyncHandler(async (req, res) => {
+  const userId = req.user?.id;
+
+  if (!userId) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+  const submissions = await db.submission.findMany({
+    where: {
+      userId: userId,
+      createdAt: {
+        gte: oneYearAgo,
+      },
+    },
+    select: {
+      createdAt: true,
+      status: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, submissions, "Heatmap data fetched successfully"),
+    );
+});

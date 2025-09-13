@@ -117,7 +117,12 @@ export const HeroHeader = () => {
                         </Avatar>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Profile</DropdownMenuLabel>
+                        <DropdownMenuLabel
+                          onClick={() => navigate("/profile")}
+                          className="cursor-pointer"
+                        >
+                          Profile
+                        </DropdownMenuLabel>
                         <DropdownMenuLabel
                           onClick={() => navigate("/add-problem")}
                           className="cursor-pointer"

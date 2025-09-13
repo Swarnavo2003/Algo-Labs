@@ -146,3 +146,61 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.react-calendar-heatmap {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    sans-serif;
+}
+
+.react-calendar-heatmap .color-empty {
+  fill: #ebedf0;
+  rx: 2;
+  ry: 2;
+}
+
+.react-calendar-heatmap .color-github-1 {
+  fill: #9be9a8;
+  rx: 2;
+  ry: 2;
+}
+
+.react-calendar-heatmap .color-github-2 {
+  fill: #40c463;
+  rx: 2;
+  ry: 2;
+}
+
+.react-calendar-heatmap .color-github-3 {
+  fill: #30a14e;
+  rx: 2;
+  ry: 2;
+}
+
+.react-calendar-heatmap .color-github-4 {
+  fill: #216e39;
+  rx: 2;
+  ry: 2;
+}
+
+.react-calendar-heatmap rect {
+  rx: 2;
+  ry: 2;
+}
+
+.react-calendar-heatmap rect:hover {
+  stroke: #1f2328;
+  stroke-width: 1px;
+  rx: 2;
+  ry: 2;
+}
+
+.react-calendar-heatmap text {
+  fill: #656d76;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.react-calendar-heatmap {
+  width: 100%;
+  height: auto;
+}
