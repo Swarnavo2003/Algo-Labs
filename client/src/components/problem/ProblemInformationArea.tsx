@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 import { useSubmissionStore } from "@/store/submission-store";
 import { useEffect, useState } from "react";
 import { useExecutionStore } from "@/store/execution-store";
+import Hints from "./Hints";
+import Discussion from "./Discussion";
 
 const ProblemInformationArea = ({ problem }: { problem: Problem }) => {
   const { id: problemId } = useParams();
@@ -57,8 +59,12 @@ const ProblemInformationArea = ({ problem }: { problem: Problem }) => {
         <TabsContent value="submission" className="flex-1 min-h-0">
           <ProblemSubmissions />
         </TabsContent>
-        <TabsContent value="hints">Hints</TabsContent>
-        <TabsContent value="discussion">Discussion</TabsContent>
+        <TabsContent value="hints">
+          <Hints hints={problem.hints || ""} />
+        </TabsContent>
+        <TabsContent value="discussion">
+          <Discussion />
+        </TabsContent>
       </Tabs>
     </Card>
   );
