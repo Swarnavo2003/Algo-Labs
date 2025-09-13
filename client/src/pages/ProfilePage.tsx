@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSubmissionStore } from "@/store/submission-store";
 import { useEffect } from "react";
 import SubmissionHeatmap from "@/components/profile/SubmissionHeatmap";
+import EditDialogBox from "@/components/profile/EditDialogBox";
 
 const ProfilePage = () => {
   const { authUser } = useAuthStore();
@@ -59,7 +60,10 @@ const ProfilePage = () => {
             </div>
 
             <div className="flex-1 text-center md:text-left">
-              <h1 className="text-3xl font-bold mb-2">{authUser.name}</h1>
+              <div className="flex justify-between">
+                <h1 className="text-3xl font-bold mb-2">{authUser.name}</h1>
+                <EditDialogBox />
+              </div>
               <p className="text-lg text-muted-foreground mb-4">
                 {authUser.bio}
               </p>

@@ -6,12 +6,18 @@ import { persist } from "zustand/middleware";
 
 type LoginData = { email: string; password: string };
 type RegisterData = { name: string; email: string; password: string };
+type UpdateUserData = {
+  name?: string;
+  bio?: string;
+  avatar?: File;
+};
 
 interface AuthState {
   authUser: AuthUser | null;
   isRegistering: boolean;
   isLoggingIn: boolean;
   isFetchingUser: boolean;
+  isUpdatingUser: boolean;
   isAuthenticated: boolean;
   getCurrentUser: () => Promise<void>;
   logoutUser: () => Promise<void>;
@@ -20,6 +26,7 @@ interface AuthState {
     data: LoginData,
     navigate: (path: string) => void
   ) => Promise<void>;
+  updateUser: (data: UpdateUserData) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -29,6 +36,7 @@ export const useAuthStore = create<AuthState>()(
       isRegistering: false,
       isLoggingIn: false,
       isFetchingUser: false,
+      isUpdatingUser: false,
       isAuthenticated: false,
       getCurrentUser: async () => {
         set({ isFetchingUser: true });
@@ -75,6 +83,39 @@ export const useAuthStore = create<AuthState>()(
           console.log(error);
         } finally {
           set({ isLoggingIn: false });
+        }
+      },
+      updateUser: async (data) => {
+        set({ isUpdatingUser: true });
+        try {
+          const formData = new FormData();
+
+          if (data.name) {
+            formData.append("name", data.name);
+          }
+
+          if (data.bio) {
+            formData.append("bio", data.bio);
+          }
+
+          if (data.avatar) {
+            formData.append("avatar", data.avatar);
+          }
+
+          const res = await axiosInstance.put("/auth/update-user", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+
+          if (res.data.success) {
+            set({ authUser: res.data.data });
+            toast.success(res.data.message);
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+          set({ isUpdatingUser: false });
         }
       },
     }),
