@@ -2,12 +2,14 @@ import AlgoLabsLoader from "@/components/alogolabs-loader";
 import { HeroHeader } from "@/components/header";
 import ProblemsTable from "@/components/problems/ProblemsTable";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/auth-store";
 import { useProblemStore } from "@/store/problem-store";
 import { PlusCircle } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const ProblemsPage = () => {
+  const { authUser } = useAuthStore();
   const { problems, isProblemsLoading, getAllProblems, getSolvedProblems } =
     useProblemStore();
   const navigate = useNavigate();
@@ -26,13 +28,15 @@ const ProblemsPage = () => {
         <div className="w-full max-w-5xl mx-auto pt-2">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
             <h1 className="text-2xl font-bold">Problems</h1>
-            <Button
-              className="bg-purple-500 hover:bg-purple-600 text-white cursor-pointer"
-              onClick={() => navigate("/add-problem")}
-            >
-              <PlusCircle className="w-4 h-4" />
-              <span className="ml-1">Add Problem</span>
-            </Button>
+            {authUser?.role === "ADMIN" && (
+              <Button
+                className="bg-purple-500 hover:bg-purple-600 text-white cursor-pointer"
+                onClick={() => navigate("/add-problem")}
+              >
+                <PlusCircle className="w-4 h-4" />
+                <span className="ml-1">Add Problem</span>
+              </Button>
+            )}
           </div>
           <div className="w-full">
             <ProblemsTable problems={problems} />

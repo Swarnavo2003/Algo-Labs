@@ -123,12 +123,14 @@ export const HeroHeader = () => {
                         >
                           Profile
                         </DropdownMenuLabel>
-                        <DropdownMenuLabel
-                          onClick={() => navigate("/add-problem")}
-                          className="cursor-pointer"
-                        >
-                          Add Problem
-                        </DropdownMenuLabel>
+                        {authUser?.role === "ADMIN" && (
+                          <DropdownMenuLabel
+                            onClick={() => navigate("/add-problem")}
+                            className="cursor-pointer"
+                          >
+                            Add Problem
+                          </DropdownMenuLabel>
+                        )}
                         <DropdownMenuLabel
                           onClick={handleLogout}
                           className="cursor-pointer"
