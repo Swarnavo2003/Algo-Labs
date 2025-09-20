@@ -21,7 +21,10 @@ interface AuthState {
   isAuthenticated: boolean;
   getCurrentUser: () => Promise<void>;
   logoutUser: () => Promise<void>;
-  registerUser: (data: RegisterData) => Promise<void>;
+  registerUser: (
+    data: RegisterData,
+    navigate: (path: string) => void
+  ) => Promise<void>;
   loginUser: (
     data: LoginData,
     navigate: (path: string) => void
@@ -67,8 +70,19 @@ export const useAuthStore = create<AuthState>()(
           set({ isLoggingIn: false });
         }
       },
-      registerUser: async () => {
+      registerUser: async (data, navigate) => {
         set({ isRegistering: true });
+        try {
+          const res = await axiosInstance.post("/auth/register", data);
+          if (res.data.success) {
+            set({ authUser: res.data.data.user, isAuthenticated: true });
+            navigate("/");
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+          set({ isRegistering: false });
+        }
       },
       loginUser: async (data, navigate) => {
         set({ isLoggingIn: true });
